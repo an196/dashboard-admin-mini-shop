@@ -27,7 +27,7 @@ import {
 
 function App() {
   const { activeMenu, themeSettings, setThemeSettings,currentColor, currentMode } = useStateContext();
-  console.log(currentMode)
+  console.log(activeMenu)
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
@@ -57,7 +57,7 @@ function App() {
             </div>
           )}
           <div
-            className={`dark:bg-main-dark-bg bg-main-bg min-h-screen md:ml-72 w-full ${
+            className={`dark:bg-main-dark-bg bg-main-bg min-h-screen w-full ${
               activeMenu ? "md:ml-72" : "flex-2"
             }`}
           >
