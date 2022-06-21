@@ -33,7 +33,7 @@ function Sidebar() {
 								dark:text-white text-slate-900"
             >
               <SiShopware />
-              <span>Shoppy</span>
+              <span>MiniShop</span>
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button
