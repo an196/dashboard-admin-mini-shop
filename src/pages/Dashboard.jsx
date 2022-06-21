@@ -75,7 +75,7 @@ function Dashboard() {
             {themeSettings && <ThemeSettings />}
             <Routes>
               {/* Dashboard */}
-              {/* <Route path="/" element={<Ecommerce />} /> */}
+              <Route index element={<Ecommerce />} />
               <Route path="/ecommerce" element={<Ecommerce />} />
 
               {/* Pages */}
