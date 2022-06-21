@@ -1,6 +1,6 @@
 import React from 'react';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
+import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar} from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import { BiColorFill } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
@@ -705,14 +705,6 @@ export const recentTransactions = [
 ];
 
 export const weeklyStats = [
-  {
-    icon: <FiShoppingCart />,
-    amount: '-$560',
-    title: 'Top Sales',
-    desc: 'Johnathan Doe',
-    iconBg: '#FB9678',
-    pcColor: 'red-600',
-  },
   {
     icon: <FiStar />,
     amount: '-$560',
