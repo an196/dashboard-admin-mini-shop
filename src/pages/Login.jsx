@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { setCredentials } from '../features/auth/authSlice';
 import { useLoginMutation } from '../features/auth/authApiSlice';
 
+import toast from 'react-hot-toast';
+
 function Login() {
     const navigate = useNavigate();
     const [login, { isLoading }] = useLoginMutation();
@@ -26,32 +28,33 @@ function Login() {
             dispatch(setCredentials({ ...userData, email }));
 
             console.log('login successfully');
+            toast.success('login successfully');
             navigate('/dashboard');
         } catch (err) {
-            console.log('err');
-            // if (!err?.originalStatus) {
-            //     // isLoading: true until timeout occurs
-            //     setErrMsg('No Server Response');
-            // } else if (err.originalStatus === 400) {
-            //     setErrMsg('Missing Username or Password');
-            // } else if (err.originalStatus === 401) {
-            //     setErrMsg('Unauthorized');
-            // } else {
-            //     setErrMsg('Login Failed');
-            // }
+            if (!err?.originalStatus) {
+                // isLoading: true until timeout occurs
+                toast.error('No Server Response');
+            } else if (err.originalStatus === 400) {
+                toast.error('Missing Username or Password');
+            } else if (err.originalStatus === 401) {
+                toast.error('Unauthorized');
+            } else {
+                toast.error('Login Failed');
+            }
             // errRef.current.focus();
         }
     };
 
     return (
         <div className='flex justify-start item-center flex-col h-screen '>
-            <div className='relative w-full h-full justify-items-center flex'>
+            
+            <div className='relative md:w-full h-full justify-items-center flex'>
                 <img
                     src={backgroundImg}
                     className='absolute overflow-hidden object-cover w-screen h-screen opacity-90 -z-10'
                 />
                 <form
-                    className='relative mt-10 space-y-8 rounded bg-white/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14 flex flex-col items-center'
+                    className='relative space-y-8 rounded bg-white/75 py-10 px-6 md:mt-0 md:max-w-md w-full  md:px-14 flex flex-col items-center'
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <div className='flex items-center space-x-3'>
