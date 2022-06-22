@@ -1,21 +1,19 @@
-import React from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import React from 'react';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
 
-import { Layout,  } from "./components";
-import {
-  Dashboard,
-  Login,
-} from "./pages";
-
+import { Layout } from './components';
+import { Dashboard, Login } from './pages';
+import RequireAuth from './features/auth/RequireAuth';
 
 function App() {
   return (
     <Routes>
       {/* public routes */}
-      <Route path="login" element={<Login />} />
+      <Route path='login' element={<Login />} />
       {/* protected routes */}
-
-      <Route path="/*" element={<Dashboard />} />
+      <Route element={<RequireAuth/>}>
+        <Route path='/*' element={<Dashboard />} />
+      </Route>
     </Routes>
   );
 }
