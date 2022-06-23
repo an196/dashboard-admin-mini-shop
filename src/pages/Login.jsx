@@ -1,6 +1,6 @@
 import React from 'react';
 import backgroundImg from '../assets/headphone.jpg';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SiShopware } from 'react-icons/si';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -47,7 +47,6 @@ function Login() {
 
     return (
         <div className='flex justify-start item-center flex-col h-screen '>
-            
             <div className='relative md:w-full h-full justify-items-center flex'>
                 <img
                     src={backgroundImg}

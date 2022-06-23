@@ -2,6 +2,7 @@ import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 
 import { Button } from '.';
+import { ActionButton} from '.';
 import { userProfileData } from '../data/dummy';
 import { useStateContext } from '../context/ContextProvider';
 import avatar from '../data/avatar.jpg';
@@ -52,13 +53,13 @@ const UserProfile = () => {
         ))}
       </div>
       <div className="mt-5">
-        <Button
+        <ActionButton
           color="white"
           bgColor={currentColor}
           text="Logout"
           borderRadius="10px"
           width="full"
-          isLogOut
+          action="logout"
         />
       </div>
     </div>
