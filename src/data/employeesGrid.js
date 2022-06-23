@@ -1,4 +1,5 @@
 import { GrLocation } from 'react-icons/gr';
+import {format} from 'date-fns';
 
 const gridEmployeeProfile = (props) => (
     <div className='flex items-center gap-2'>
@@ -12,6 +13,12 @@ const gridEmployeeCountry = (props) => (
         <GrLocation />
         <span>{props.country}</span>
     </div>
+);
+
+const gridEmployeeHireDate = (props) => (
+  <div className='flex items-center justify-center gap-2'>
+      <span>{format(new Date(props.hireDate), 'dd/MM/yyyy')}</span>
+  </div>
 );
 
 export const employeesGrid = [
@@ -50,6 +57,7 @@ export const employeesGrid = [
         field: 'hireDate',
         headerText: 'Hire date',
         width: '150',
+        template: gridEmployeeHireDate,
         textAlign: 'Center',
     },
     {
