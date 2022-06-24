@@ -1,54 +1,66 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
+//component
 import { Header, ActionButton } from '../../components';
+//form
 import { useForm } from 'react-hook-form';
+//context api
 import { useStateContext } from '../../context/ContextProvider';
-import firebase from '../firebase/firebaseConfig';
+//icon
 import { FcAddImage } from 'react-icons/fc';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { MdDelete } from 'react-icons/md';
+import { ImCalendar } from 'react-icons/im';
+//file upload
 import { FileUploader } from 'react-drag-drop-files';
-
+//datetime picker
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 //firebase
+import firebase from '../firebase/firebaseConfig';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-const storage = getStorage();
+//formet date
+import { format } from 'date-fns';
+//toast
+import toast from 'react-hot-toast';
+//api
+import { useCreateEmployeeMutation } from './employeeApiSlice';
 
+const storage = getStorage(firebase);
+
+//define type of file
 const fileTypes = ['JPG', 'PNG', 'GIF'];
 
 function CreateEmployee() {
     const [wrongImageType, setWrongImageType] = useState(false);
     const [imageAsset, setImageAsset] = useState(null);
     const progressBarRef = useRef();
+    const [startDate, setStartDate] = useState(new Date());
+
+    const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
 
     const {
         register,
         handleSubmit,
         watch,
+        setValue,
+        reset,
         formState: { errors },
     } = useForm();
 
     const { currentColor } = useStateContext();
 
-    const onSubmit = async ({ email, password }) => {
-        // try {
-        //     const userData = await login({ email, password }).unwrap();
-        //     console.log('logining');
-        //     dispatch(setCredentials({ ...userData, email }));
-        //     console.log('login successfully');
-        //     toast.success('login successfully');
-        //     navigate('/dashboard');
-        // } catch (err) {
-        //     if (!err?.originalStatus) {
-        //         // isLoading: true until timeout occurs
-        //         toast.error('No Server Response');
-        //     } else if (err.originalStatus === 400) {
-        //         toast.error('Missing Username or Password');
-        //     } else if (err.originalStatus === 401) {
-        //         toast.error('Unauthorized');
-        //     } else {
-        //         toast.error('Login Failed');
-        //     }
-        //     // errRef.current.focus();
-        // }
+    const onSubmit = async (props) => {
+        try {
+            createEmployee({ ...props, employeeID: 10 })
+                .unwrap()
+                .then((data) => {
+                    toast.success('Create employee successfully');
+                })
+                .catch((error) => {
+                    toast.success(error);
+                });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const uploadElement = (
@@ -76,7 +88,6 @@ function CreateEmployee() {
             file.type === 'image/gif' ||
             file.type === 'image/tiff'
         ) {
-            
             // Create the file metadata
             var metadata = {
                 contentType: file.type,
@@ -93,27 +104,23 @@ function CreateEmployee() {
                     console.log('Upload is ' + progress + '% done');
                     switch (snapshot.state) {
                         case 'paused':
-                            console.log('Upload is paused');
                             break;
                         case 'running':
-                            console.log('Upload is running');
                             break;
                     }
                 },
                 (error) => {
-                    // A full list of error codes is available at
-                    // https://firebase.google.com/docs/storage/web/handle-errors
                     switch (error.code) {
                         case 'storage/unauthorized':
-                            // User doesn't have permission to access the object
+                            toast.error("User doesn't have permission to access the object");
                             break;
 
                         case 'storage/canceled':
-                            // User canceled the upload
+                            toast.error('User canceled the upload');
                             break;
 
                         case 'storage/unknown':
-                            // Unknown error occurred, inspect error.serverResponse
+                            toast.error('Unknown error occurred, inspect error.serverResponse');
                             break;
                     }
                 },
@@ -122,6 +129,7 @@ function CreateEmployee() {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         console.log('File available at', downloadURL);
                         setImageAsset(downloadURL);
+                        setValue('imgProfile', downloadURL);
                     });
                 },
             );
@@ -130,77 +138,77 @@ function CreateEmployee() {
         }
     };
 
+    const handleDateTimepickerChange = (date) => {
+        setStartDate(date);
+        setValue('hireDate', format(date, 'yyyy/MM/dd'));
+    };
+
+    useEffect(() => {
+        register('hireDate', { required: true });
+        register('imgProfile', { required: true });
+    }, [register]);
+
     return (
         <div className='m-2 md:m-10 p-2 mt-20 md:p-10 bg-white rounded-xl shadow-md  px-10'>
             <div>
                 <Header category='Create' title='Employees' />
             </div>
             <div className='mt-3 w-full xl:w-1/3  lg:w-2/3'>
-                <form className='space-y-3 w-xl' onSubmit={handleSubmit(onSubmit)}>
-                    <div className='flex float-left flex-col text-md w-full'>
-                        <label className='text-md font-semibold'>Name</label>
+                <form className='space-y-2 w-xl' onSubmit={handleSubmit(onSubmit)}>
+                    <div className='input-container-row'>
+                        <label className='input-lable'>Name</label>
                         <label>
                             <input
                                 type='text'
                                 placeholder='Name'
-                                className='flex-1 py-2 border-b-1 border-gray-400 focus:border-black focus:text-black text-sm text-gray-600 
-                                placeholder-gray-400 w-full outline-none'
+                                className='input-form'
                                 {...register('name', { required: true })}
                             />
-                            {errors.email && (
-                                <p className='p-1 text-[13px] font-light  text-orange-500'>
-                                    Please enter a valid email.
-                                </p>
-                            )}
+                            {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
                         </label>
                     </div>
-                    <div className='flex float-left flex-col text-md w-full'>
-                        <label className='text-md font-semibold'>Email</label>
+                    <div className='input-container-row'>
+                        <label className='input-lable'>Email</label>
                         <label>
                             <input
                                 type='email'
                                 placeholder='Email'
-                                className='flex-1 py-2 border-b-1 border-gray-400 focus:border-black focus:text-black text-sm text-gray-600 
-                                placeholder-gray-400 w-full outline-none'
+                                className='input-form'
                                 {...register('email', { required: true })}
                             />
-                            {errors.email && (
-                                <p className='p-1 text-[13px] font-light  text-orange-500'>
-                                    Please enter a valid email.
-                                </p>
-                            )}
+                            {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
                         </label>
                     </div>
-                    <div className='flex float-left flex-col text-md w-full'>
-                        <label className='text-md font-semibold'>Country</label>
+                    <div className='input-container-row'>
+                        <label className='input-lable'>Country</label>
                         <label>
                             <select
                                 id='country'
                                 name='country'
-                                className='flex-1 py-2 border-b-1 border-gray-400 focus:border-black focus:text-black text-sm
-                                text-gray-600 placeholder-gray-400 w-full outline-none'
+                                className='input-form'
+                                {...register('country', { required: true })}
                             >
                                 <option>United States</option>
                                 <option>Canada</option>
                                 <option>Mexico</option>
                             </select>
-                            {errors.email && (
-                                <p className='p-1 text-[13px] font-light  text-orange-500'>
-                                    Please enter a valid email.
-                                </p>
-                            )}
+                            {errors.country && <p className='input-lable-warning'>Please choose country.</p>}
                         </label>
                     </div>
-                    <div className='flex float-left flex-col text-md w-full'>
-                        <label className='block text-md font-semibold'>Cover photo</label>
+                    <div className='input-container-row'>
+                        <label className='block input-lable'>Cover photo</label>
                         {!imageAsset ? (
-                            <FileUploader handleChange={uploadImage} children={uploadElement} types={fileTypes}  />
+                            <label>
+                                <FileUploader handleChange={uploadImage} children={uploadElement} types={fileTypes} />
+                                {errors.imgProfile && <p className='input-lable-warning'>Please choose image.</p>}
+                            </label>
                         ) : (
-                            <div className='relative h-full'>
+                            <div className='relative h-full mt-2'>
                                 <img src={imageAsset} alt='uploaded-pic' className='w-full h-full' />
                                 <button
                                     type='button'
-                                    className='absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out'
+                                    className='absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none 
+                                    hover:shadow-md transition-all duration-500 ease-in-out'
                                     onClick={() => setImageAsset(null)}
                                 >
                                     <MdDelete />
@@ -208,7 +216,25 @@ function CreateEmployee() {
                             </div>
                         )}
                     </div>
-                    <ActionButton text='Sign in' bgColor={currentColor} color='white' borderRadius={5} width='full' />
+                    <div className='input-container-row'>
+                        <label className='block input-lable mt-3'>Hire date</label>
+                        <div className='w-1/2'>
+                            <DatePicker
+                                selected={startDate}
+                                onChange={(date) => handleDateTimepickerChange(date)}
+                                className='input-form'
+                            />
+                        </div>
+                    </div>
+                    <div className='input-container-row'></div>
+                    <ActionButton
+                        text='Create'
+                        bgColor={currentColor}
+                        color='white'
+                        borderRadius={5}
+                        width='full'
+                        type='submit'
+                    />
                 </form>
             </div>
         </div>

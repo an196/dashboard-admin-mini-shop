@@ -6,6 +6,29 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* custome class name */
+@layer components{
+  .input-form{
+    @apply flex-1 py-2 border-b-1 border-gray-400 focus:border-black focus:text-black text-sm text-gray-600 
+    placeholder-gray-400 w-full outline-none;
+  }
+
+  .input-container-row{
+    @apply flex float-left flex-col font-bold w-full;
+  }
+
+  .input-lable{
+    @apply text-base font-semibold;
+  }
+
+  .input-lable-warning{
+    @apply p-1 text-[13px] font-light text-orange-500;
+  }
+}
+

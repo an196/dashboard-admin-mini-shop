@@ -3,7 +3,7 @@ import { useStateContext } from '../context/ContextProvider';
 import { logOut } from '../features/auth/authSlice';
 import toast from 'react-hot-toast';
 
-function ActionButton({ icon, bgColor, color, size, text, borderRadius, bgHoverColor, width, action, to, customeStyle }) {
+function ActionButton({ icon, bgColor, color, size, text, borderRadius, bgHoverColor, width, action, to, customeStyle, type }) {
     const { setIsClicked, initialState } = useStateContext();
     const location = useLocation();
     let navigate = useNavigate();
@@ -30,7 +30,7 @@ function ActionButton({ icon, bgColor, color, size, text, borderRadius, bgHoverC
 
     return (
         <button
-            type='button'
+            type={type ||'button'}
             onClick={() => handleAction(action,to)}
             style={{ backgroundColor: bgColor, color, borderRadius }}
             className={`text-${size} p-3 w-${width} hover:drop-shadow-xl hover:bg-${bgHoverColor} ${customeStyle}`}

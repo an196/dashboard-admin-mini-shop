@@ -5,9 +5,20 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
         getEmployees: builder.query({
             query: () => '/employees',
         }),
-    })
+        createEmployee: builder.mutation({
+            query: epmloyee => ({
+                url: '/employees',
+                method: 'POST',
+                body: {
+                    ...epmloyee,
+                } 
+            })
+        }),
+    }),
+    
 })
 
 export const {
-    useGetEmployeesQuery
+    useGetEmployeesQuery,
+    useCreateEmployeeMutation,
 } = employeeApiSlice
