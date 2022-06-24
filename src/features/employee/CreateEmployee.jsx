@@ -24,6 +24,7 @@ import toast from 'react-hot-toast';
 //api
 import { useCreateEmployeeMutation } from './employeeApiSlice';
 
+
 const storage = getStorage(firebase);
 
 //define type of file
@@ -34,7 +35,7 @@ function CreateEmployee() {
     const [imageAsset, setImageAsset] = useState(null);
     const progressBarRef = useRef();
     const [startDate, setStartDate] = useState(new Date());
-
+    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
     const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
 
     const {
@@ -48,19 +49,18 @@ function CreateEmployee() {
 
     const { currentColor } = useStateContext();
 
-    const onSubmit = async (props) => {
-        try {
-            createEmployee({ ...props, employeeID: 10 })
-                .unwrap()
-                .then((data) => {
-                    toast.success('Create employee successfully');
-                })
-                .catch((error) => {
-                    toast.success(error);
-                });
-        } catch (error) {
-            console.log(error);
-        }
+    const onSubmit = (props) => {
+        console.log(props)
+        createEmployee({...props, emplyeeID : 10})
+            .then((data) => {
+                toast.success('Create employee successfully');
+                // setIsSubmitSuccessful(true);
+                reset();
+            })
+            .catch((error) => {
+                toast.error('Error on submit');
+                console.log(error);
+            });
     };
 
     const uploadElement = (
@@ -144,9 +144,10 @@ function CreateEmployee() {
     };
 
     useEffect(() => {
-        register('hireDate', { required: true });
         register('imgProfile', { required: true });
-    }, [register]);
+    }, []);
+
+
 
     return (
         <div className='m-2 md:m-10 p-2 mt-20 md:p-10 bg-white rounded-xl shadow-md  px-10'>
@@ -226,7 +227,6 @@ function CreateEmployee() {
                             />
                         </div>
                     </div>
-                    <div className='input-container-row'></div>
                     <ActionButton
                         text='Create'
                         bgColor={currentColor}
@@ -235,7 +235,7 @@ function CreateEmployee() {
                         width='full'
                         type='submit'
                     />
-                </form>
+                </form> 
             </div>
         </div>
     );

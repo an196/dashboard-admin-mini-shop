@@ -9,10 +9,10 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
             query: epmloyee => ({
                 url: '/employees',
                 method: 'POST',
-                body: {
-                    ...epmloyee,
-                } 
-            })
+                epmloyee,
+                 
+            }),
+            invalidatesTags: [ { type: 'Employee', id: "LIST" }],
         }),
     }),
     
