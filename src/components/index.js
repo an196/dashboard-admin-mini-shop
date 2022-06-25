@@ -13,3 +13,4 @@ export { default as Pie } from './Charts/Pie';
 export { default as Header } from './Header';
 export { default as Layout } from './Layout';
 export { default as ActionButton } from './ActionButton';
+export { default as Spinner } from './Spinner';

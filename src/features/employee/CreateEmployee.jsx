@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 //component
-import { Header, ActionButton } from '../../components';
+import { Header, ActionButton, Spinner } from '../../components';
 //form
 import { useForm } from 'react-hook-form';
 //context api
@@ -23,7 +23,8 @@ import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 //api
 import { useCreateEmployeeMutation } from './employeeApiSlice';
-
+//constants
+import { TIMEDELAY } from '../../utils/constants/time.contants';
 
 const storage = getStorage(firebase);
 
@@ -35,7 +36,8 @@ function CreateEmployee() {
     const [imageAsset, setImageAsset] = useState(null);
     const progressBarRef = useRef();
     const [startDate, setStartDate] = useState(new Date());
-    const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
     const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
 
     const {
@@ -50,12 +52,15 @@ function CreateEmployee() {
     const { currentColor } = useStateContext();
 
     const onSubmit = (props) => {
-        console.log(props)
-        createEmployee({...props, emplyeeID : 10})
+        setPageLoading(true);
+        createEmployee({ ...props, emplyeeID: 10 })
             .then((data) => {
-                toast.success('Create employee successfully');
-                // setIsSubmitSuccessful(true);
-                reset();
+                setTimeout(() => {
+                    toast.success('Create employee successfully');
+                    setImageAsset(null);
+                    reset();
+                    setPageLoading(false);
+                }, TIMEDELAY);
             })
             .catch((error) => {
                 toast.error('Error on submit');
@@ -64,7 +69,7 @@ function CreateEmployee() {
     };
 
     const uploadElement = (
-        <div>
+        <div >
             <label className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-gray-400'>
                 <div className='space-y-1 text-center items-center flex flex-col text-indigo-600'>
                     <FcAddImage className='h-10 w-10' />
@@ -88,6 +93,7 @@ function CreateEmployee() {
             file.type === 'image/gif' ||
             file.type === 'image/tiff'
         ) {
+            setLoading(true);
             // Create the file metadata
             var metadata = {
                 contentType: file.type,
@@ -96,12 +102,14 @@ function CreateEmployee() {
             var uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
             // Listen for state changes, errors, and completion of the upload.
+
             uploadTask.on(
                 'state_changed',
                 (snapshot) => {
                     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
+                    console.log(loading);
                     switch (snapshot.state) {
                         case 'paused':
                             break;
@@ -128,8 +136,11 @@ function CreateEmployee() {
                     // Upload completed successfully, now we can get the download URL
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         console.log('File available at', downloadURL);
-                        setImageAsset(downloadURL);
-                        setValue('imgProfile', downloadURL);
+                        setTimeout(() => {
+                            setImageAsset(downloadURL);
+                            setValue('imgProfile', downloadURL);
+                            setLoading(false);
+                        }, TIMEDELAY);
                     });
                 },
             );
@@ -147,96 +158,109 @@ function CreateEmployee() {
         register('imgProfile', { required: true });
     }, []);
 
-
-
     return (
-        <div className='m-2 md:m-10 p-2 mt-20 md:p-10 bg-white rounded-xl shadow-md  px-10'>
-            <div>
-                <Header category='Create' title='Employees' />
-            </div>
-            <div className='mt-3 w-full xl:w-1/3  lg:w-2/3'>
-                <form className='space-y-2 w-xl' onSubmit={handleSubmit(onSubmit)}>
-                    <div className='input-container-row'>
-                        <label className='input-lable'>Name</label>
-                        <label>
-                            <input
-                                type='text'
-                                placeholder='Name'
-                                className='input-form'
-                                {...register('name', { required: true })}
-                            />
-                            {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
-                        </label>
+        <div >
+            {!pageLoading ? (
+                <div className='m-2 md:m-10 p-2 mt-20 md:p-10 bg-white rounded-xl shadow-md px-10'>
+                    <div>
+                        <Header category='Create' title='Employees' />
                     </div>
-                    <div className='input-container-row'>
-                        <label className='input-lable'>Email</label>
-                        <label>
-                            <input
-                                type='email'
-                                placeholder='Email'
-                                className='input-form'
-                                {...register('email', { required: true })}
-                            />
-                            {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
-                        </label>
-                    </div>
-                    <div className='input-container-row'>
-                        <label className='input-lable'>Country</label>
-                        <label>
-                            <select
-                                id='country'
-                                name='country'
-                                className='input-form'
-                                {...register('country', { required: true })}
-                            >
-                                <option>United States</option>
-                                <option>Canada</option>
-                                <option>Mexico</option>
-                            </select>
-                            {errors.country && <p className='input-lable-warning'>Please choose country.</p>}
-                        </label>
-                    </div>
-                    <div className='input-container-row'>
-                        <label className='block input-lable'>Cover photo</label>
-                        {!imageAsset ? (
-                            <label>
-                                <FileUploader handleChange={uploadImage} children={uploadElement} types={fileTypes} />
-                                {errors.imgProfile && <p className='input-lable-warning'>Please choose image.</p>}
-                            </label>
-                        ) : (
-                            <div className='relative h-full mt-2'>
-                                <img src={imageAsset} alt='uploaded-pic' className='w-full h-full' />
-                                <button
-                                    type='button'
-                                    className='absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none 
-                                    hover:shadow-md transition-all duration-500 ease-in-out'
-                                    onClick={() => setImageAsset(null)}
-                                >
-                                    <MdDelete />
-                                </button>
+                    <div className='mt-3 w-full xl:w-1/3  lg:w-2/3'>
+                        <form className='space-y-2 w-xl' onSubmit={handleSubmit(onSubmit)}>
+                            <div className='input-container-row'>
+                                <label className='input-lable'>Name</label>
+                                <label>
+                                    <input
+                                        type='text'
+                                        placeholder='Name'
+                                        className='input-form'
+                                        {...register('name', { required: true })}
+                                    />
+                                    {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
+                                </label>
                             </div>
-                        )}
-                    </div>
-                    <div className='input-container-row'>
-                        <label className='block input-lable mt-3'>Hire date</label>
-                        <div className='w-1/2'>
-                            <DatePicker
-                                selected={startDate}
-                                onChange={(date) => handleDateTimepickerChange(date)}
-                                className='input-form'
+                            <div className='input-container-row'>
+                                <label className='input-lable'>Email</label>
+                                <label>
+                                    <input
+                                        type='email'
+                                        placeholder='Email'
+                                        className='input-form'
+                                        {...register('email', { required: true })}
+                                    />
+                                    {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
+                                </label>
+                            </div>
+                            <div className='input-container-row'>
+                                <label className='input-lable'>Country</label>
+                                <label>
+                                    <select
+                                        id='country'
+                                        name='country'
+                                        className='input-form'
+                                        {...register('country', { required: true })}
+                                    >
+                                        <option>United States</option>
+                                        <option>Canada</option>
+                                        <option>Mexico</option>
+                                    </select>
+                                    {errors.country && <p className='input-lable-warning'>Please choose country.</p>}
+                                </label>
+                            </div>
+                            <div className='input-container-row'>
+                                <label className='block input-lable'>Cover photo</label>
+                                {loading && <Spinner message='Uploading image!' customeStyle='mt-3' />}
+                                {!imageAsset ? (
+                                    !loading && (
+                                        <label>
+                                            <FileUploader
+                                                handleChange={uploadImage}
+                                                children={uploadElement}
+                                                types={fileTypes}
+                                            />
+                                            {errors.imgProfile && (
+                                                <p className='input-lable-warning'>Please choose image.</p>
+                                            )}
+                                        </label>
+                                    )
+                                ) : (
+                                    <div className='relative h-full mt-2'>
+                                        <img src={imageAsset} alt='uploaded-pic' className='w-full h-full' />
+                                        <button
+                                            type='button'
+                                            className='absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none 
+                                    hover:shadow-md transition-all duration-500 ease-in-out'
+                                            onClick={() => setImageAsset(null)}
+                                        >
+                                            <MdDelete />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                            <div className='input-container-row'>
+                                <label className='block input-lable mt-3'>Hire date</label>
+                                <div className='w-1/2'>
+                                    <DatePicker
+                                        selected={startDate}
+                                        onChange={(date) => handleDateTimepickerChange(date)}
+                                        className='input-form'
+                                    />
+                                </div>
+                            </div>
+                            <ActionButton
+                                text='Create'
+                                bgColor={currentColor}
+                                color='white'
+                                borderRadius={5}
+                                width='full'
+                                type='submit'
                             />
-                        </div>
+                        </form>
                     </div>
-                    <ActionButton
-                        text='Create'
-                        bgColor={currentColor}
-                        color='white'
-                        borderRadius={5}
-                        width='full'
-                        type='submit'
-                    />
-                </form> 
-            </div>
+                </div>
+            ) : (
+                <Spinner message='Submitting...!' customeStyle='mt-96' />
+            )}
         </div>
     );
 }
