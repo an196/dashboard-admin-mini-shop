@@ -22,6 +22,7 @@ const gridEmployeeHireDate = (props) => (
 );
 
 export const employeesGrid = [
+    { type: 'checkbox', width: '50' },
     {
         field: 'employeeID',
         headerText: 'Employee',

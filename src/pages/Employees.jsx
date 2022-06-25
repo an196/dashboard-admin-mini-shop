@@ -11,19 +11,63 @@ import {
 
 import { employeesGrid } from '../features/employee/employeesGrid';
 import { Header } from '../components';
-import { useGetEmployeesQuery } from '../features/employee/employeeApiSlice';
+import { useGetEmployeesQuery, useDeleteEmployeeMutation } from '../features/employee/employeeApiSlice';
 import { ActionButton } from '../components';
 import { useStateContext } from '../context/ContextProvider';
+
+const toolbarOptions = ['Delete', 'Search'];
+const editing = { allowDeleting: true };
 
 function Employees() {
     const { currentColor } = useStateContext();
 
-    const { data: employees, isLoading, isSuccess, isError, error } = useGetEmployeesQuery();
+    const {data, isLoading, isSuccess, isError, error } = useGetEmployeesQuery();
+    const [ deleteEmployee, { isLoading: isDeleteLoading }]  = useDeleteEmployeeMutation();
+    
+    let employees;
 
-    let content;
     if (isLoading) {
         <p>"Loading..."</p>;
     }
+
+    if (isSuccess) {
+        employees = [...data];
+    }
+
+    if (isError) {
+        console.log(error);
+    }
+
+    const handleDelete = (id) => {
+        deleteEmployee(id).unwrap()
+            .then((data)=>{
+                console.log("ok")
+            })
+            .catch((err)=>console.log(err));
+    }
+
+    function actionBegin(args) {
+        if (args.requestType === 'delete') {
+            //triggers while deleting the record
+            console.log('actionBegin triggers');
+            console.log(args.data[0]?._id);
+            const id = args.data[0]?._id;
+            handleDelete(id)
+        }
+    }
+
+    function actionComplete(args) {
+        // if (args.requestType === 'delete') {
+        //     //triggers while deleting the record
+        //     
+        //     console.log(args.data);
+        // }
+        console.log('actionDelete triggers');
+    }
+
+    useEffect(()=>{
+        console.log('data change')
+    },[data])
 
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
@@ -45,8 +89,11 @@ function Employees() {
                 dataSource={employees}
                 allowPaging
                 allowSorting
-                toolbar={['Search']}
+                toolbar={toolbarOptions}
                 width='auto'
+                editSettings={editing}
+                actionBegin={actionBegin.bind(this)}
+                actionComplete={actionComplete.bind(this)}
             >
                 <ColumnsDirective>
                     {employeesGrid.map((item, index) => (

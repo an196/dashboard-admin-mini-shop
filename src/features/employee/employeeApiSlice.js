@@ -4,6 +4,11 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getEmployees: builder.query({
             query: () => '/employees',
+            keepUnusedDataFor: 1,
+            providesTags: (result, error, arg) => [
+                { type: 'Employee', id: "LIST" },
+                
+            ]
         }),
         createEmployee: builder.mutation({
             query: epmloyee => ({
@@ -14,6 +19,16 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [ { type: 'Employee', id: "LIST" }],
         }),
+        deleteEmployee: builder.mutation({
+            query: (id) => ({
+                url: `/employees`,
+                method: 'DELETE',
+                body: { id}
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Employee', id: arg.id }
+            ]
+        }),
     }),
     
 })
@@ -21,4 +36,5 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
 export const {
     useGetEmployeesQuery,
     useCreateEmployeeMutation,
+    useDeleteEmployeeMutation,
 } = employeeApiSlice
