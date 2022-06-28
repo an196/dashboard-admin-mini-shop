@@ -1,0 +1,8 @@
+{
+    "users" : [
+        { "name": "Nasimiyu Danai", "id": 1},
+        { "name": "Iulia Albu", "id": 2}, 
+        { "name": "Siegbert Gottfried", "id": 3},
+        { "name": "Nancy Davolio", "id": 4}
+    ]
+}

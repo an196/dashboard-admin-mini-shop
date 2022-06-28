@@ -3,29 +3,28 @@ import {format} from 'date-fns';
 
 const gridEmployeeProfile = (props) => (
     <div className='flex items-center gap-2'>
-        <img className='rounded-full w-10 h-10' src={props.imgProfile} alt='employee' />
-        <p>{props.name}</p>
+        <img className='rounded-full w-10 h-10' src={props?.imgProfile} alt='employee' />
+        <p>{props?.name}</p>
     </div>
 );
 
 const gridEmployeeCountry = (props) => (
     <div className='flex items-center justify-center gap-2'>
         <GrLocation />
-        <span>{props.country}</span>
+        <span>{props?.country}</span>
     </div>
 );
 
 const gridEmployeeHireDate = (props) => (
   <div className='flex items-center justify-center gap-2'>
-      <span>{format(new Date(props.hireDate), 'dd/MM/yyyy')}</span>
+      <span>{format(new Date(props?.hireDate), 'dd/MM/yyyy')}</span>
   </div>
 );
 
 export const employeesGrid = [
-    { type: 'checkbox', width: '50' },
     {
         field: 'employeeID',
-        headerText: 'Employee',
+        headerText: 'EmployeeID',
         width: '150',
         textAlign: 'Center',
     },

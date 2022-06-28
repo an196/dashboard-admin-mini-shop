@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback,useMemo } from 'react';
+//Synfusion
 import {
     GridComponent,
     ColumnsDirective,
@@ -8,24 +9,31 @@ import {
     Inject,
     Toolbar,
 } from '@syncfusion/ej2-react-grids';
+import { Browser, extend } from '@syncfusion/ej2-base';
 
 import { employeesGrid } from '../features/employee/employeesGrid';
+import { DialogFormTemplate } from '../features/employee/DialogFormTemplate';
 import { Header } from '../components';
-import { useGetEmployeesQuery, useDeleteEmployeeMutation } from '../features/employee/employeeApiSlice';
+import {
+    useGetEmployeesQuery,
+    useDeleteEmployeeMutation,
+    useUpdateEmployeeMutation,
+} from '../features/employee/employeeApiSlice';
 import { ActionButton } from '../components';
 import { useStateContext } from '../context/ContextProvider';
 
-const toolbarOptions = ['Delete', 'Search'];
-const editing = { allowDeleting: true };
-
 function Employees() {
+    const toolbarOptions = ['Delete', 'Search', 'Edit', 'Update', 'Cancel'];
+    const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog', template: dialogTemplate };
+
     const { currentColor } = useStateContext();
 
-    const {data, isLoading, isSuccess, isError, error } = useGetEmployeesQuery();
-    const [ deleteEmployee, { isLoading: isDeleteLoading }]  = useDeleteEmployeeMutation();
-    
-    let employees;
 
+    const { data, isLoading, isSuccess, isError, error } = useGetEmployeesQuery();
+    const [deleteEmployee, ] = useDeleteEmployeeMutation();
+    const [updateEmployee] = useUpdateEmployeeMutation();
+
+    let employees;
     if (isLoading) {
         <p>"Loading..."</p>;
     }
@@ -39,35 +47,47 @@ function Employees() {
     }
 
     const handleDelete = (id) => {
-        deleteEmployee(id).unwrap()
-            .then((data)=>{
-                console.log("ok")
+        deleteEmployee(id)
+            .unwrap()
+            .then((data) => {
             })
-            .catch((err)=>console.log(err));
-    }
+            .catch((err) => console.log(err));
+    };
+
+
 
     function actionBegin(args) {
+        console.log('hehh')
         if (args.requestType === 'delete') {
             //triggers while deleting the record
-            console.log('actionBegin triggers');
-            console.log(args.data[0]?._id);
             const id = args.data[0]?._id;
-            handleDelete(id)
+            handleDelete(id);
+        }
+        if (args.requestType === 'save' && args.form) {
+            updateEmployee(args.data)
+                .unwrap()
+                .then((data) => console.log(data))
+                .catch((err) => console.log(err));
         }
     }
 
     function actionComplete(args) {
-        // if (args.requestType === 'delete') {
-        //     //triggers while deleting the record
-        //     
-        //     console.log(args.data);
-        // }
-        console.log('actionDelete triggers');
+        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+            if (Browser.isDevice) {
+                args.dialog.height = window.innerHeight - 90 + 'px';
+                args.dialog.dataBind();
+            }
+        }
     }
 
-    useEffect(()=>{
-        console.log('data change')
-    },[data])
+    function actionFailure(args) {
+        
+    }
+
+    function dialogTemplate(props) {
+        return <DialogFormTemplate {...props} />;
+    }
+
 
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
@@ -94,6 +114,7 @@ function Employees() {
                 editSettings={editing}
                 actionBegin={actionBegin.bind(this)}
                 actionComplete={actionComplete.bind(this)}
+                actionFailure={actionFailure.bind}
             >
                 <ColumnsDirective>
                     {employeesGrid.map((item, index) => (

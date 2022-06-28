@@ -25,6 +25,7 @@ import toast from 'react-hot-toast';
 import { useCreateEmployeeMutation } from './employeeApiSlice';
 //constants
 import { TIMEDELAY } from '../../utils/constants/time.contants';
+import {countries} from '../../data/countries';
 
 const storage = getStorage(firebase);
 
@@ -53,7 +54,9 @@ function CreateEmployee() {
 
     const onSubmit = (props) => {
         setPageLoading(true);
-        createEmployee({ ...props, emplyeeID: 10 })
+        console.log(props);
+
+        createEmployee(props)
             .then((data) => {
                 setTimeout(() => {
                     toast.success('Create employee successfully');
@@ -69,7 +72,7 @@ function CreateEmployee() {
     };
 
     const uploadElement = (
-        <div >
+        <div>
             <label className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-gray-400'>
                 <div className='space-y-1 text-center items-center flex flex-col text-indigo-600'>
                     <FcAddImage className='h-10 w-10' />
@@ -159,7 +162,7 @@ function CreateEmployee() {
     }, []);
 
     return (
-        <div >
+        <div>
             {!pageLoading ? (
                 <div className='m-2 md:m-10 p-2 mt-20 md:p-10 bg-white rounded-xl shadow-md px-10'>
                     <div>
@@ -200,9 +203,9 @@ function CreateEmployee() {
                                         className='input-form'
                                         {...register('country', { required: true })}
                                     >
-                                        <option>United States</option>
-                                        <option>Canada</option>
-                                        <option>Mexico</option>
+                                        {countries?.map((country) => 
+                                            (<option key={country.code} value={country.name}>{country.name}</option>)
+                                        )}
                                     </select>
                                     {errors.country && <p className='input-lable-warning'>Please choose country.</p>}
                                 </label>
