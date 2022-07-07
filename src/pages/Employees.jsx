@@ -57,7 +57,6 @@ function Employees() {
 
 
     function actionBegin(args) {
-        console.log('hehh')
         if (args.requestType === 'delete') {
             //triggers while deleting the record
             const id = args.data[0]?._id;

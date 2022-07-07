@@ -22,7 +22,7 @@ function Customers() {
 
     let content;
     if (isLoading) {
-        content = <p>"Loading..."</p>;
+        return  (<p>"Loading..."</p>);
     }
 
     return (

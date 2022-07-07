@@ -1,7 +1,5 @@
 import React from 'react';
 import { DataUtil } from '@syncfusion/ej2-data';
-import { Browser, extend } from '@syncfusion/ej2-base';
-import { NumericTextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import {countries} from '../../data/countries'

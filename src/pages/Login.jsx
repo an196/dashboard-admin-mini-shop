@@ -53,7 +53,7 @@ function Login() {
                     className='absolute overflow-hidden object-cover w-screen h-screen opacity-90 -z-10'
                 />
                 <form
-                    className='relative space-y-8 rounded bg-white/75 py-10 px-6 md:mt-0 md:max-w-md w-full  md:px-14 flex flex-col items-center'
+                    className='relative space-y-8 rounded bg-white py-10 px-6 md:mt-0 md:max-w-md w-full  md:px-14 flex flex-col items-center'
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <div className='flex items-center space-x-3'>
@@ -67,11 +67,11 @@ function Login() {
                                 <input
                                     type='text'
                                     placeholder='Email'
-                                    className='input w-full h-10 p-3 outline-none text-md rounded-sm'
+                                    className='input w-full h-10 p-3 outline-none text-md rounded-sm border'
                                     {...register('email', { required: true })}
                                 />
                                 {errors.email && (
-                                    <p className='p-1 text-[13px] font-light  text-orange-500'>
+                                    <p className='p-1 text-[13px] font-light  text-orange-500 '>
                                         Please enter a valid email.
                                     </p>
                                 )}
@@ -80,7 +80,7 @@ function Login() {
                                 <input
                                     type='password'
                                     placeholder='Password'
-                                    className='input w-full h-10 p-3 outline-none text-md rounded-sm'
+                                    className='input w-full h-10 p-3 outline-none text-md rounded-sm border' 
                                     {...register('password', { required: true })}
                                 />
                                 {errors.password && (
@@ -91,7 +91,7 @@ function Login() {
                             </label>
                         </div>
 
-                        <button type='submit' className='w-full rounded bg-[#e50914] py-3 font-semibold'>
+                        <button type='submit' className='w-full rounded bg-[#e50914] py-3 font-semibold text-white'>
                             Sign In
                         </button>
                     </div>

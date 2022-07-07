@@ -16,3 +16,6 @@ export { default as Pyramid } from './Charts/Pyramid';
 export { default as Stacked } from './Charts/Stacked';
 export { default as Login } from './Login';
 export { default as Dashboard } from './Dashboard';
+export { default as Products } from './Products';
+export { default as Category } from './Category';
+export { default as Banner } from './Banner';

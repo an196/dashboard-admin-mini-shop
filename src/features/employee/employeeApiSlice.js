@@ -7,7 +7,6 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 5,
             providesTags: (result, error, arg) => [
                 { type: 'Employee', id: "LIST" },
-                
             ]
         }),
         createEmployee: builder.mutation({

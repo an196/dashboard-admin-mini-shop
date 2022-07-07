@@ -24,6 +24,9 @@ import {
     ColorMapping,
     Editor,
     Login,
+    Products,
+    Category,
+    Banner
 } from '../pages';
 
 import CreateEmployee from '../features/employee/CreateEmployee';
@@ -76,11 +79,12 @@ function Dashboard() {
 
                             {/* Pages */}
                             <Route path='/orders' element={<Orders />} />
-                            
                             <Route path='/employees' element={<Employees />} />
                             <Route path='/employees/add' element={<CreateEmployee />} />
-
                             <Route path='/customers' element={<Customers />} />
+                            <Route path='/products' element={<Products />} />
+                            <Route path='/categories' element={<Category />} />
+                            <Route path='/banner' element={<Banner />} />
 
                             {/* Apps */}
                             <Route path='/kanban' element={<Kanban />} />
