@@ -40,6 +40,10 @@ function Category() {
     };
 
     function actionBegin(args) {
+       
+    }
+
+    function actionComplete(args) {
         if (args.requestType === 'delete') {
             //triggers while deleting the record
             const id = args.data[0]?._id;
@@ -51,9 +55,6 @@ function Category() {
                 .then((data) => console.log(data))
                 .catch((err) => console.log(err));
         }
-    }
-
-    function actionComplete(args) {
         if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
             const dialog = args.dialog;
             

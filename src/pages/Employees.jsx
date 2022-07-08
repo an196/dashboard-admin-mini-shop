@@ -62,12 +62,7 @@ function Employees() {
             const id = args.data[0]?._id;
             handleDelete(id);
         }
-        if (args.requestType === 'save' && args.form) {
-            updateEmployee(args.data)
-                .unwrap()
-                .then((data) => console.log(data))
-                .catch((err) => console.log(err));
-        }
+       
     }
 
     function actionComplete(args) {
@@ -76,6 +71,22 @@ function Employees() {
                 args.dialog.height = window.innerHeight - 90 + 'px';
                 args.dialog.dataBind();
             }
+
+            const dialog = args.dialog;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Edit Employee ' + args.rowData['employeeID'] : 'New Employee';
+        }
+
+        if (args.requestType === 'save' && args.form) {
+             console.log(args.data)
+            // const newInfo = {
+            //     ...args.data,
+            //     imgProfile:args.data.imgProfileUpdate
+            // }
+            updateEmployee(args.data)
+                .unwrap()
+                .then((data) => console.log(data))
+                .catch((err) => console.log(err));
         }
     }
 
