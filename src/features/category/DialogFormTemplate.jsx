@@ -1,5 +1,4 @@
 import React from 'react';
-import { Browser, extend } from '@syncfusion/ej2-base';
 export class SampleBase extends React.PureComponent {
     rendereComplete() {
         /**custom render complete function */
@@ -13,9 +12,7 @@ export class SampleBase extends React.PureComponent {
 export class DialogFormTemplate extends SampleBase {
     constructor(props) {
         super(props);
-        this.state = extend({}, {}, props, true);
-        // this.state =Object.assign({}, props);
-      
+        this.state =Object.assign({}, props);
     }
 
     onChange(args) {
@@ -28,19 +25,23 @@ export class DialogFormTemplate extends SampleBase {
     }
     render() {
         const data = this.state;
-      
+
         return (
             <div>
                 <div className='form-row grid text-md'>
-                    <div className=' e-float-input e-control-wrapper'>
-                        <input id='code' type='number' name='code'
-                            disabled={true} 
-                            value={data.code} 
-                            ref={(input) => (this.code = input)}
-                        />
-                        <span className='e-float-line'></span>
-                        <label className='e-float-text e-label-top font-bold'>Code</label>
-                    </div>
+                    {!data.isAdd && (
+                        <div className=' e-float-input e-control-wrapper'>
+                            <input
+                                id='code'
+                                type='number'
+                                name='code'
+                                disabled={true}
+                                value={data.code}
+                            />
+                            <span className='e-float-line'></span>
+                            <label className='e-float-text e-label-top font-bold'>Code</label>
+                        </div>
+                    )}
                     <div className='form-group e-float-input e-control-wrapper'>
                         <input
                             ref={(input) => (this.name = input)}

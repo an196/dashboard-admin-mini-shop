@@ -10,7 +10,7 @@ import {
     Toolbar,
     Edit,
 } from '@syncfusion/ej2-react-grids';
-
+import { Browser, extend } from '@syncfusion/ej2-base';
 import {
     useGetCategoriesQuery,
     useUpdateCategoryMutation,
@@ -21,25 +21,25 @@ import { DialogFormTemplate } from '../features/category/DialogFormTemplate';
 import { categoryGrid } from '../features/category/categoryGrid';
 import { Header } from '../components';
 
-
 function Category() {
-    const toolbarOptions = ['Delete', 'Search', 'Edit', 'Update', 'Cancel'];
+    const toolbarOptions = ['Add', 'Delete', 'Search', 'Edit', 'Update', 'Cancel'];
     const editing = {
         allowDeleting: true,
         allowEditing: true,
+        allowAdding: true,
         mode: 'Dialog',
         template: dialogTemplate,
     };
     const { data, isLoading, isSuccess, isError, error } = useGetCategoriesQuery();
     const [updateCategory] = useUpdateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
-    const [createCategory] = useDeleteCategoryMutation();
+    const [createCategory] = useCreateCategoryMutation();
 
-    const [hideConfirmDialog, setHideConfirmDialog] = useState(true);
-     let categories;
-    
+    let categories;
+
     if (isSuccess) {
-        categories = data;
+        categories = [...data];
+        console.log(categories)
     }
 
     const handleDelete = (id) => {
@@ -49,18 +49,21 @@ function Category() {
             .catch((err) => console.log(err));
     };
 
-    function actionBegin(args ) {       
+    function actionBegin(args) {
         if (args.requestType === 'delete') {
-            console.log(args.data[0])
+            console.log(args.data[0]);
             //triggers while deleting the record
             const id = args.data[0]?._id;
-             handleDelete(id);
-            
+            handleDelete(id);
         }
     }
 
     function actionComplete(args) {
         if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+            if (Browser.isDevice) {
+                args.dialog.dataBind();
+            }
+
             const dialog = args.dialog;
             // change the header of the dialog
             dialog.header =
@@ -68,10 +71,18 @@ function Category() {
         }
 
         if (args.requestType === 'save' && args.form) {
-            updateCategory(args.data)
-                .unwrap()
-                .then((data) => console.log(data))
-                .catch((err) => console.log(err));
+            if (args.data.code) {
+                updateCategory(args.data)
+                    .unwrap()
+                    .then((data) => console.log(data))
+                    .catch((err) => console.log(err));
+            } else {
+                console.log(args.data)
+                createCategory(args.data)
+                    .unwrap()
+                    .then((data) => console.log(data))
+                    .catch((err) => console.log(err));
+            }
         }
     }
 
@@ -79,8 +90,6 @@ function Category() {
         return <DialogFormTemplate {...props} />;
     }
 
-  
-  
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
             <div className='flex justify-between items-center'>
