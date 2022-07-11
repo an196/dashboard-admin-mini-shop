@@ -14,9 +14,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
                 url: '/categories',
                 method: 'POST',
                 body: { 
-                    ...category,
-                    categoryID: '9',
-                    hireDate: category.hireDate || new Date()
+                    ...category
                 }
                  
             }),

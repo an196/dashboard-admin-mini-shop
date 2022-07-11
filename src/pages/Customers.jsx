@@ -33,7 +33,7 @@ function Customers() {
                 dataSource={customers}
                 allowPaging
                 allowSorting
-                editSettings={{ allowDeleting: true, allowEditing: true }}
+                editSettings={{ allowDeleting: true }}
                 width='auto'
             >
                 <ColumnsDirective>
@@ -41,7 +41,7 @@ function Customers() {
                         <ColumnDirective key={index} {...item} />
                     ))}
                 </ColumnsDirective>
-                <Inject services={[Page, Toolbar, Selection, Edit, Sort, Filter]} />
+                <Inject services={[Page, Toolbar, Edit, Sort, Filter]} />
             </GridComponent>
         </div>
     );

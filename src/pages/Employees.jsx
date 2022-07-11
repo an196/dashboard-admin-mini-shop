@@ -8,6 +8,7 @@ import {
     Search,
     Inject,
     Toolbar,
+    Edit
 } from '@syncfusion/ej2-react-grids';
 import { Browser, extend } from '@syncfusion/ej2-base';
 
@@ -18,13 +19,14 @@ import {
     useGetEmployeesQuery,
     useDeleteEmployeeMutation,
     useUpdateEmployeeMutation,
+    useCreateEmployeeMutation
 } from '../features/employee/employeeApiSlice';
 import { ActionButton } from '../components';
 import { useStateContext } from '../context/ContextProvider';
 
 function Employees() {
-    const toolbarOptions = ['Delete', 'Search', 'Edit', 'Update', 'Cancel'];
-    const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog', template: dialogTemplate };
+    const toolbarOptions = ['Add','Delete', 'Search', 'Edit', 'Update', 'Cancel'];
+    const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, mode: 'Dialog', template: dialogTemplate };
 
     const { currentColor } = useStateContext();
 
@@ -32,7 +34,8 @@ function Employees() {
     const { data, isLoading, isSuccess, isError, error } = useGetEmployeesQuery();
     const [deleteEmployee, ] = useDeleteEmployeeMutation();
     const [updateEmployee] = useUpdateEmployeeMutation();
-
+    const [createEmployee] = useCreateEmployeeMutation();
+    
     let employees;
     if (isLoading) {
         <p>"Loading..."</p>;
@@ -79,14 +82,19 @@ function Employees() {
 
         if (args.requestType === 'save' && args.form) {
              console.log(args.data)
-            // const newInfo = {
-            //     ...args.data,
-            //     imgProfile:args.data.imgProfileUpdate
-            // }
-            updateEmployee(args.data)
+          
+            if(args.data.employeeID){
+                updateEmployee(args.data)
                 .unwrap()
                 .then((data) => console.log(data))
                 .catch((err) => console.log(err));
+            }
+            else{
+                createEmployee(args.data)
+                .unwrap()
+                .then((data) => console.log(data))
+                .catch((err) => console.log(err));
+            }
         }
     }
 
@@ -131,7 +139,7 @@ function Employees() {
                         <ColumnDirective key={index} {...item} />
                     ))}
                 </ColumnsDirective>
-                <Inject services={[Page, Search, Toolbar]} />
+                <Inject services={[Page, Search, Toolbar, Edit]} />
             </GridComponent>
         </div>
     );

@@ -52,18 +52,19 @@ export class DialogFormTemplate extends SampleBase {
         return (
             <div>
                 <div className='grid text-md'>
-                    <div className='e-float-input e-control-wrapper'>
-                        <input
-                            id='employeeID'
-                            name='employeeID'
-                            type='number'
-                            disabled={!data.isAdd}
-                            value={data.employeeID}
-                        />
-                        <span className='e-float-line'></span>
-                        <label className='e-float-text e-label-top font-bold'>Emplyee ID</label>
-                    </div>
-
+                    {!data.isAdd && (
+                        <div className='e-float-input e-control-wrapper'>
+                            <input
+                                id='employeeID'
+                                name='employeeID'
+                                type='number'
+                                disabled={true}
+                                value={data.employeeID}
+                            />
+                            <span className='e-float-line'></span>
+                            <label className='e-float-text e-label-top font-bold'>Emplyee ID</label>
+                        </div>
+                    )}
                     <div className='e-float-input e-control-wrapper'>
                         <input
                             ref={(input) => (this.name = input)}
@@ -102,16 +103,15 @@ export class DialogFormTemplate extends SampleBase {
                             )
                         ) : (
                             <div className='relative h-full m-2'>
-                                <img
-                                    src={data.imgProfile}
-                                    className='w-[150px] h-[150px]'
-                                />
-                                <input type="text" className='hidden' 
-                                     ref={(input) => (this.imgProfile = input)}
-                                     value={data.imgProfile}
-                                     id='imgProfile'
-                                     name='imgProfile'
-                                     onChange={this.onChange.bind(this)}
+                                <img src={data.imgProfile} className='w-[150px] h-[150px]' />
+                                <input
+                                    type='text'
+                                    className='hidden'
+                                    ref={(input) => (this.imgProfile = input)}
+                                    value={data.imgProfile}
+                                    id='imgProfile'
+                                    name='imgProfile'
+                                    onChange={this.onChange.bind(this)}
                                 />
                                 <button
                                     type='button'

@@ -1,4 +1,4 @@
-export const categoryGrid = [
+export let categoryGrid = [
     {
         field: 'code',
         headerText: 'Code',

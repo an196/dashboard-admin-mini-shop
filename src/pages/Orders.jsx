@@ -27,6 +27,8 @@ function Orders() {
           dataSource={ordersData}
           allowPaging
           allowSorting
+          allowAdding
+          toolbar={contextMenuItems}
       >
         <ColumnsDirective>
           {ordersGrid.map((item, index) => (

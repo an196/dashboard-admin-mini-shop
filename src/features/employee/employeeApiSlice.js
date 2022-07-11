@@ -14,9 +14,7 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
                 url: '/employees',
                 method: 'POST',
                 body: { 
-                    ...employee,
-                    employeeID: '9',
-                    hireDate: employee.hireDate || new Date()
+                    ...employee
                 }
                  
             }),
