@@ -1,8 +1,14 @@
-import {format} from 'date-fns';
+import { formatDate } from '../../utils/helper/format';
 
 const gridImage = (props) => (
     <div className='flex items-center gap-2'>
-        <img className='rounded w-10 h-10' src={props?.image[0]} alt='product' />
+        <img className='rounded w-10 h-10' src={props?.image?.length > 1 ? props?.image[0] :  props?.image} alt='product' />
+    </div>
+);
+
+const gridGoodsReceipt = (props) => (
+    <div className='flex items-center gap-2'>
+        <span>{formatDate(props?.goodsReceipts)}</span>
     </div>
 );
 
@@ -42,6 +48,7 @@ export const productGrid = [
         field: 'goodsReceipts',
         headerText: 'Goods Receipt',
         width: '150',
+        template: gridGoodsReceipt,
         textAlign: 'Center',
     },
     {
@@ -49,5 +56,5 @@ export const productGrid = [
         headerText: 'Category',
         width: '150',
         textAlign: 'Center',
-    }
+    },
 ];

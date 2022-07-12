@@ -43,6 +43,7 @@ function Employees() {
 
     if (isSuccess) {
         employees = [...data];
+        console.log(employees)
     }
 
     if (isError) {

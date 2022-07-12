@@ -15,12 +15,10 @@ export const productApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { 
                     ...product,
-                    productID: '9',
-                    hireDate: product.hireDate || new Date()
                 }
                  
             }),
-            invalidatesTags: [ { type: 'product', id: "LIST" }],
+            invalidatesTags: [ { type: 'Product', id: "LIST" }],
         }),
         deleteProduct: builder.mutation({
             query: (id) => ({

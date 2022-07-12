@@ -1,5 +1,5 @@
 import { GrLocation } from 'react-icons/gr';
-import {format} from 'date-fns';
+import {formatDate} from '../../utils/helper/format';
 
 const gridEmployeeProfile = (props) => (
     <div className='flex items-center gap-2'>
@@ -17,7 +17,7 @@ const gridEmployeeCountry = (props) => (
 
 const gridEmployeeHireDate = (props) => (
   <div className='flex items-center justify-center gap-2'>
-      <span>{format(new Date(props?.hireDate), 'dd/MM/yyyy')}</span>
+      <span>{formatDate(props?.hireDate)}</span>
   </div>
 );
 

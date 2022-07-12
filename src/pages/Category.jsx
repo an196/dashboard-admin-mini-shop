@@ -39,7 +39,6 @@ function Category() {
 
     if (isSuccess) {
         categories = [...data];
-        console.log(categories)
     }
 
     const handleDelete = (id) => {
@@ -77,7 +76,6 @@ function Category() {
                     .then((data) => console.log(data))
                     .catch((err) => console.log(err));
             } else {
-                console.log(args.data)
                 createCategory(args.data)
                     .unwrap()
                     .then((data) => console.log(data))

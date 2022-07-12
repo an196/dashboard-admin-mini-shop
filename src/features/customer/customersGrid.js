@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { formatDate } from '../../utils/helper/format';
 
 const customerGridImage = (props) => (
     <div className='image flex gap-4'>
@@ -12,13 +12,13 @@ const customerGridImage = (props) => (
 
 const customerJoinDate = (props) => (
     <div className='flex items-center justify-center gap-2'>
-        <span>{format(new Date(props.joinDate), 'dd/MM/yyyy')}</span>
+        <span>{formatDate(props?.joinDate)}</span>
     </div>
 );
 
 const customerLastAccessDate = (props) => (
     <div className='flex items-center justify-center gap-2'>
-        <span>{format(new Date(props.lastAccessAt), 'dd/MM/yyyy')}</span>
+        <span>{formatDate(props?.lastAccessAt)}</span>
     </div>
 )
 
