@@ -4,7 +4,7 @@ import { SiShopware } from "react-icons/si";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import { links } from "../data/dummy";
+import { links } from "../features/sidebar/item";
 import { useStateContext } from "../context/ContextProvider";
 
 const activeLink =
