@@ -179,7 +179,7 @@ function CreateEmployee() {
                                         className='input-form'
                                         {...register('name', { required: true })}
                                     />
-                                    {errors.email && <p className='input-lable-warning'>Please enter a valid email.</p>}
+                                    {errors.email && <p className='input-lable-warning'>Please enter a valid name.</p>}
                                 </label>
                             </div>
                             <div className='input-container-row'>

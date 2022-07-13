@@ -1,13 +1,13 @@
 import { formatDate } from '../../utils/helper/format';
 
 const gridImage = (props) => (
-    <div className='flex items-center gap-2'>
+    <div className='flex items-center gap-2 justify-center'>
         <img className='rounded w-10 h-10' src={props?.image?.length > 1 ? props?.image[0] :  props?.image} alt='product' />
     </div>
 );
 
 const gridGoodsReceipt = (props) => (
-    <div className='flex items-center gap-2'>
+    <div className='flex items-center gap-2 justify-center'>
         <span>{formatDate(props?.goodsReceipts)}</span>
     </div>
 );
