@@ -1,0 +1,1 @@
+export const TYPE_FILE = ['JPG', 'PNG', 'GIF', 'WEBP'] ;

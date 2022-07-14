@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStateContext } from '../../context/ContextProvider';
 import DatePicker from 'react-datepicker';
-import { ActionButton } from '../../components';
-import { useState } from 'react';
+import { ActionButton, UploadElement, Spinner } from '../../components';
 import { formatDate } from '../../utils/helper/format';
+import { FileUploader } from 'react-drag-drop-files';
+import { TYPE_FILE } from '../../utils/constants/file.contants';
+import { MdDelete } from 'react-icons/md';
+import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 
 function FormBanner({ banner, onUpdate }) {
     const { currentColor } = useStateContext();
     const [infoBanner, setInfoBanner] = useState(banner);
+    const [imageLoading, setImageLoading] = useState(false);
+    const [image, setImage] = useState();
 
     const {
         register,
@@ -18,6 +23,7 @@ function FormBanner({ banner, onUpdate }) {
         reset,
         formState: { errors },
     } = useForm({
+        mode: 'onChange',
         defaultValues: {
             buttonText: infoBanner.buttonText,
             desc: infoBanner.desc,
@@ -34,19 +40,28 @@ function FormBanner({ banner, onUpdate }) {
         setValue('saleTime', date);
     }
 
-    function handleChange(args) {
-        console.log(args.target.name);
-        console.log(args.target.value);
-        let key = args.target.name;
-        let value = args.target.value;
-        setValue({ [key]: value });
-    }
+    const handleClearImage = (args) => {
+        setImage(null);
+    };
+
+    const handleChangeImage = (file) => {
+        console.log(file);
+        firebaseUploadImage(file)
+            .then((result) => {
+            setValue('image', result);
+            setImage(result);
+        })
+        .catch((err)=> console.log(err))
+        ;
+    };
 
     useEffect(() => {
+        //to check props changed
         setValue('saleTime', infoBanner?.saleTime);
         setValue('image', infoBanner?.image);
         setValue('__v', infoBanner?.__v);
         setValue('_id', infoBanner?._id);
+        setImage(infoBanner?.image);
     }, []);
 
     return (
@@ -72,7 +87,6 @@ function FormBanner({ banner, onUpdate }) {
                         placeholder='Description'
                         className='input-form'
                         name='desc'
-                        onChange={(input) => handleChange(input)}
                         {...register('desc', { required: true })}
                     />
                     {errors.desc && <p className='input-lable-warning'>Please enter a description.</p>}
@@ -155,6 +169,27 @@ function FormBanner({ banner, onUpdate }) {
                         locale='vi-VI'
                     />
                 </div>
+            </div>
+            <div className='input-container-row'>
+                <label className='input-lable'>Image</label>
+                {imageLoading.loading && <Spinner message='Uploading image!' customeStyle='mt-3' />}
+                {!image ? (
+                    !imageLoading && (
+                        <FileUploader handleChange={handleChangeImage} children={<UploadElement />} types={TYPE_FILE} />
+                    )
+                ) : (
+                    <div className='relative h-full m-2'>
+                        <img src={image} className='w-[150px] h-[150px]' />
+                        <button
+                            type='button'
+                            className='absolute bottom-2 right-0 p-1 rounded-full bg-white text-xl cursor-pointer outline-none 
+                                    hover:shadow-md transition-all duration-500 ease-in-out hover:bg-black/40'
+                            onClick={handleClearImage}
+                        >
+                            <MdDelete />
+                        </button>
+                    </div>
+                )}
             </div>
             <div className='input-container-row'>
                 <ActionButton

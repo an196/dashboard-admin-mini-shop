@@ -36,10 +36,8 @@ export class DialogFormTemplate extends SampleBase {
     }
 
     uploadImage(file) {
-        console.log(this.state);
         firebaseUploadImage(file).then((result) => {
             this.setState({ imgProfile: result });
-            console.log(this.state);
         });
     }
 

@@ -20,7 +20,8 @@ export const firebaseUploadImage = (file) => {
             file.type === 'image/svg' ||
             file.type === 'image/jpeg' ||
             file.type === 'image/gif' ||
-            file.type === 'image/tiff'
+            file.type === 'image/tiff' ||
+            file.type === 'image/webp'
         ) {
             state.loading = true;
     
