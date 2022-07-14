@@ -33,7 +33,7 @@ export const bannerApiSlice = apiSlice.injectEndpoints({
         updateBanner: builder.mutation({
             query: banner => ({
                 url: `/banners/default/${banner._id}`,
-                method: 'PUT',
+                method: 'PATCH',
                 body: {
                     ...banner,
                 }
