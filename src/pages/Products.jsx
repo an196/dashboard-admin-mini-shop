@@ -12,18 +12,24 @@ import {
 } from '@syncfusion/ej2-react-grids';
 import { useGetProductsQuery,useDeleteProductMutation, useCreateProductMutation, useUpdateProductMutation } from '../features/product/productApiSlice';
 import { productGrid } from '../features/product/productGrid';
-import { Header } from '../components';
+import { Header, ActionButton } from '../components';
 import DialogFormTemplate from '../features/product/DialogFormTemplate';
 import { Browser, extend } from '@syncfusion/ej2-base';
+import { useStateContext } from '../context/ContextProvider';
 
 function Products() {
+    //table
     const toolbarOptions = ['Add', 'Delete', 'Search', 'Edit', 'Update', 'Cancel'];
     const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog', allowAdding: true, template: dialogTemplate };
+
+    //rtk query
     const { data, isSuccess } = useGetProductsQuery();
     const [deleteProduct] = useDeleteProductMutation();
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
 
+    //context
+    const {currentColor} = useStateContext();
     let products;
    
     if(isSuccess){
@@ -77,6 +83,16 @@ function Products() {
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
             <div className='flex justify-between items-center'>
                 <Header category='Page' title='Products' />
+                <ActionButton
+                    color='white'
+                    bgColor={currentColor}
+                    text='Add'
+                    borderRadius='10px'
+                    width='w-md'
+                    customeStyle={`order-last h-8 text-center leading-normal flex items-center text-sm hover:${currentColor}/75`}
+                    action='add'
+                    to='/products/add'
+                />
             </div>
             <GridComponent
                 id='gridcomp'

@@ -1,18 +1,11 @@
 import React from 'react';
-export class SampleBase extends React.PureComponent {
-    rendereComplete() {
-        /**custom render complete function */
-    }
-    componentDidMount() {
-        setTimeout(() => {
-            this.rendereComplete();
-        });
-    }
-}
+import { SampleBase } from '../../components/Base/SampleBase';
+import { InputDialog } from '../../components';
+
 export class DialogFormTemplate extends SampleBase {
     constructor(props) {
         super(props);
-        this.state =Object.assign({}, props);
+        this.state = Object.assign({}, props);
     }
 
     onChange(args) {
@@ -20,9 +13,9 @@ export class DialogFormTemplate extends SampleBase {
         let value = args.target.value;
         this.setState({ [key]: value });
     }
-    componentDidMount() {
-        this.name.focus();
-    }
+
+    componentDidMount() {}
+
     render() {
         const data = this.state;
 
@@ -30,30 +23,22 @@ export class DialogFormTemplate extends SampleBase {
             <div>
                 <div className='form-row grid text-md'>
                     {!data.isAdd && (
-                        <div className=' e-float-input e-control-wrapper'>
-                            <input
-                                id='code'
-                                type='number'
-                                name='code'
-                                disabled={true}
-                                value={data.code}
-                            />
-                            <span className='e-float-line'></span>
-                            <label className='e-float-text e-label-top font-bold'>Code</label>
-                        </div>
-                    )}
-                    <div className='form-group e-float-input e-control-wrapper'>
-                        <input
-                            ref={(input) => (this.name = input)}
-                            value={data.name}
-                            id='name'
-                            name='name'
-                            type='text'
+                        <InputDialog
+                            value={data.code}
+                            name='code'
+                            type='number'
+                            label='Code'
+                            disable
                             onChange={this.onChange.bind(this)}
                         />
-                        <span className='e-float-line'></span>
-                        <label className='e-float-text e-label-top'>Category</label>
-                    </div>
+                    )}
+                    <InputDialog
+                        value={data.name}
+                        name='name'
+                        type='text'
+                        label='Category'
+                        onChange={this.onChange.bind(this)}
+                    />
                 </div>
             </div>
         );

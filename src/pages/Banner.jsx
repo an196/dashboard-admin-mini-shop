@@ -33,7 +33,9 @@ function Banner() {
                 <div className='flex-1 p-10 border-1'>
                     {isSuccess && <FormBanner banner={banner} onUpdate={onUpdate} />}
                 </div>
-                <div className='flex-1 bg-blue-500'>b</div>
+                <div className='flex-1'>
+                    
+                </div>
             </div>
         </div>
     );

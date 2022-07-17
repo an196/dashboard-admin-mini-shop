@@ -11,3 +11,7 @@ export { default as Layout } from './Layout';
 export { default as ActionButton } from './ActionButton';
 export { default as Spinner } from './Spinner';
 export { default as UploadElement } from './UploadElement';
+export { default as InputDialog } from './InputDialog';
+export { default as DeleteButton } from './DeleteButton';
+export { default as DragAndDropImage } from './DragAndDropImage';
+export { default as InputForm } from './InputForm';

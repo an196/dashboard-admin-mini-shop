@@ -1,9 +1,9 @@
 import {FcAddImage} from 'react-icons/fc';
 import React from 'react'
 
-function UploadElement() {
+function UploadElement({style}) {
   return (
-    <div>
+    <div className={`${style}`}>
         <label className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-gray-400'>
             <div className='space-y-1 text-center items-center flex flex-col text-indigo-600'>
                 <FcAddImage className='h-10 w-10' />

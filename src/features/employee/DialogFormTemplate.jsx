@@ -3,24 +3,10 @@ import { DataUtil } from '@syncfusion/ej2-data';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { countries } from '../../data/countries';
-import { FileUploader } from 'react-drag-drop-files';
-import { Spinner } from '../../components';
-import { MdDelete } from 'react-icons/md';
+import { InputDialog, DragAndDropImage } from '../../components';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
-import { UploadElement } from '../../components';
+import { SampleBase } from '../../components/Base/SampleBase';
 
-const fileTypes = ['JPG', 'PNG', 'GIF'];
-
-export class SampleBase extends React.PureComponent {
-    rendereComplete() {
-        /**custom render complete function */
-    }
-    componentDidMount() {
-        setTimeout(() => {
-            this.rendereComplete();
-        });
-    }
-}
 
 export class DialogFormTemplate extends SampleBase {
     CountryDistinctData = DataUtil.distinct(countries, 'name', true);
@@ -43,7 +29,6 @@ export class DialogFormTemplate extends SampleBase {
 
     componentDidMount() {
         // Set initail Focus
-        this.name.focus();
     }
     render() {
         const data = this.state;
@@ -51,77 +36,41 @@ export class DialogFormTemplate extends SampleBase {
             <div>
                 <div className='grid text-md'>
                     {!data.isAdd && (
-                        <div className='e-float-input e-control-wrapper'>
-                            <input
-                                id='employeeID'
-                                name='employeeID'
-                                type='number'
-                                disabled={true}
-                                value={data.employeeID}
-                            />
-                            <span className='e-float-line'></span>
-                            <label className='e-float-text e-label-top font-bold'>Emplyee ID</label>
-                        </div>
+                        <InputDialog
+                            value={data.employeeID}
+                            name='employeeID'
+                            type='number'
+                            label='Emplyee ID'
+                            disable
+                            onChange={this.onChange.bind(this)}
+                        />
                     )}
-                    <div className='e-float-input e-control-wrapper'>
-                        <input
-                            ref={(input) => (this.name = input)}
-                            value={data.name}
-                            id='name'
-                            name='name'
-                            type='text'
-                            onChange={this.onChange.bind(this)}
-                        />
-                        <span className='e-float-line'></span>
-                        <label className='e-float-text e-label-top'>Name</label>
-                    </div>
-
-                    <div className='e-float-input e-control-wrapper'>
-                        <input
-                            ref={(input) => (this.email = input)}
-                            value={data.email}
-                            id='email'
-                            name='email'
-                            type='text'
-                            onChange={this.onChange.bind(this)}
-                        />
-                        <span className='e-float-line'></span>
-                        <label className='e-float-text e-label-top'>Email</label>
-                    </div>
-                    <div className='input-container-row'>
-                        <label className='e-control-wrapper'>Cover photo</label>
-                        {data.loading && <Spinner message='Uploading image!' customeStyle='mt-3' />}
-                        {!data.imgProfile ? (
-                            !data.loading && (
-                                <FileUploader
-                                    handleChange={this.uploadImage.bind(this)}
-                                    children={<UploadElement />}
-                                    types={fileTypes}
-                                />
-                            )
-                        ) : (
-                            <div className='relative h-full m-2'>
-                                <img src={data.imgProfile} className='w-[150px] h-[150px]' />
-                                <input
-                                    type='text'
-                                    className='hidden'
-                                    ref={(input) => (this.imgProfile = input)}
-                                    value={data.imgProfile}
-                                    id='imgProfile'
-                                    name='imgProfile'
-                                    onChange={this.onChange.bind(this)}
-                                />
-                                <button
-                                    type='button'
-                                    className='absolute bottom-2 right-0 p-1 rounded-full bg-white text-xl cursor-pointer outline-none 
-                                    hover:shadow-md transition-all duration-500 ease-in-out hover:bg-black/40'
-                                    onClick={() => this.setState({ imgProfile: '' })}
-                                >
-                                    <MdDelete />
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    <InputDialog
+                        value={data.name}
+                        name='name'
+                        type='text'
+                        label='Name'
+                        onChange={this.onChange.bind(this)}
+                    />
+                    <InputDialog
+                        value={data.email}
+                        name='email'
+                        type='email'
+                        label='Email'
+                        onChange={this.onChange.bind(this)}
+                    />
+                     <DragAndDropImage
+                        label='Cover photo'
+                        loading={data.loading}
+                        handleImageChange={this.uploadImage.bind(this)}
+                        image={data.imgProfile}
+                        imageStyle='w-[150px] h-[150px]'
+                        name='imgProfile'
+                        containerStyle='input-container-row'
+                        labelStyle='e-control-wrapper'
+                        onChange={this.onChange.bind(this)}
+                        onDeleteImage={() => this.setState({ image: '' })}
+                    />
                     <DatePickerComponent
                         id='hireDate'
                         name='hireDate'
@@ -130,7 +79,6 @@ export class DialogFormTemplate extends SampleBase {
                         floatLabelType='Always'
                         format='dd/MM/yyyy'
                     ></DatePickerComponent>
-
                     <DropDownListComponent
                         id='Country'
                         name='country'
@@ -141,18 +89,13 @@ export class DialogFormTemplate extends SampleBase {
                         popupHeight='300px'
                         floatLabelType='Always'
                     ></DropDownListComponent>
-                    <div className='e-float-input e-control-wrapper'>
-                        <input
-                            ref={(input) => (this.reportTo = input)}
-                            value={data.reportTo}
-                            id='reportTo'
-                            name='reportTo'
-                            type='text'
-                            onChange={this.onChange.bind(this)}
-                        />
-                        <span className='e-float-line'></span>
-                        <label className='e-float-text e-label-top'>Report To</label>
-                    </div>
+                    <InputDialog
+                        value={data.reportTo}
+                        name='reportTo'
+                        type='text'
+                        label='Report To'
+                        onChange={this.onChange.bind(this)}
+                    />
                 </div>
             </div>
         );
