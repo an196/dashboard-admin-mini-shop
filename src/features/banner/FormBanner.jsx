@@ -7,7 +7,7 @@ import { formatDate } from '../../utils/helper/format';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 
 function FormBanner({ banner, onUpdate }) {
-    const { currentColor } = useStateContext();
+    const {currentColor } = useStateContext();
     const [infoBanner, setInfoBanner] = useState(banner);
     const [imageLoading, setImageLoading] = useState(false);
     const [image, setImage] = useState();
