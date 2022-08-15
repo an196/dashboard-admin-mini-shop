@@ -85,6 +85,7 @@ function Dashboard() {
                             <Route path='/customers' element={<Customers />} />
                             <Route path='/products' element={<Products />} />
                             <Route path='/products/add' element={<CreateProduct />} />
+                            <Route path='/products/add/:id' element={<CreateProduct />} />
                             <Route path='/categories' element={<Category />} />
                             <Route path='/banner' element={<Banner />} />
 

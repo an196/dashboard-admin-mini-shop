@@ -5,10 +5,22 @@ import { useCreateProductMutation, useUpdateProductMutation, useGetProductQuery 
 import toast from 'react-hot-toast';
 import { useParams } from "react-router-dom";
 
-function CreateProduct() {
+function UpdateProduct() {
+    let params = useParams();
+    let product;
+
+    const {data, isSuccess} = useGetProductQuery(params.id);
     const [createProduct] = useCreateProductMutation();
+    const [updateProduct] = useUpdateProductMutation();
+    
+    console.log(params)
+    
+    if(isSuccess){
+         product = {...data};
+    }
 
     const onUpdate = (props) => {
+       
         createProduct(props)
             .then(() => toast.success('Create product successful'))
             .catch(() => toast.error('Create product failure'));
@@ -21,7 +33,7 @@ function CreateProduct() {
             </div>
             <div className='flex w-full'>
                 <div className='flex-1 p-10 border-1'>
-                    <FormProduct onUpdate={onUpdate} />
+                    <FormProduct onUpdate={onUpdate} product={ product} />
                 </div>
                 <div className='flex-1'></div>
             </div>
@@ -29,4 +41,4 @@ function CreateProduct() {
     );
 }
 
-export default CreateProduct;
+export default UpdateProduct;

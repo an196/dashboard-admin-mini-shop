@@ -15,3 +15,5 @@ export { default as InputDialog } from './InputDialog';
 export { default as DeleteButton } from './DeleteButton';
 export { default as DragAndDropImage } from './DragAndDropImage';
 export { default as InputForm } from './InputForm';
+export { default as DropDown } from './DropDown';
+export { default as Editor } from './Editor';

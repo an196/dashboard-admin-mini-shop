@@ -4,6 +4,8 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { InputDialog, DragAndDropImage } from '../../components';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 import { SampleBase } from '../../components/Base/SampleBase';
+import { NavLink } from 'react-router-dom';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 
 export default class DialogFormTemplate extends SampleBase {
     constructor(props) {
@@ -16,6 +18,10 @@ export default class DialogFormTemplate extends SampleBase {
         let key = args.target.name;
         let value = args.target.value;
         this.setState({ [key]: value });
+    }
+
+    onEditorChange(args) {
+        this.setState({ details: args.value.toString() });
     }
 
     uploadImage(file) {
@@ -43,7 +49,7 @@ export default class DialogFormTemplate extends SampleBase {
     render() {
         const data = this.state;
         return (
-            <div>
+            <div className=''>
                 <div className='grid text-md'>
                     {!data.isAdd && (
                         <InputDialog
@@ -106,13 +112,16 @@ export default class DialogFormTemplate extends SampleBase {
                         label='Amount'
                         onChange={this.onChange.bind(this)}
                     />
-                    <InputDialog
-                        value={data.details}
-                        name='details'
-                        type='text'
-                        label='Details'
-                        onChange={this.onChange.bind(this)}
-                    />
+                    <div className='mt-2'>
+                        <NavLink
+                            to={`/products/add/${data._id}`}
+                            className={`flex flex-row w-full underline  underline-offset-auto items-center space-x-1
+                             hover:text-blue-900 hover:font-medium`}
+                        >
+                            <span className=' '>More details</span>
+                            <AiOutlineArrowRight className='mt-[1px]' />
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         );

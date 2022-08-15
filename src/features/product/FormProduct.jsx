@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { DragAndDropImage, InputForm } from '../../components';
+import { ActionButton, DragAndDropImage, DropDown, InputForm, Editor } from '../../components';
 import { useStateContext } from '../../context/ContextProvider';
 import { useForm } from 'react-hook-form';
 import { formatDate } from '../../utils/helper/format';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
-import {
-    HtmlEditor,
-    Image,
-    Inject,
-    Link,
-    QuickToolbar,
-    RichTextEditorComponent,
-    Toolbar,
-} from '@syncfusion/ej2-react-richtexteditor';
-import { EditorData } from '../../data/dummy';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 
 function FormProduct({ onUpdate }) {
@@ -24,6 +14,7 @@ function FormProduct({ onUpdate }) {
     const [imageLoading, setImageLoading] = useState(false);
     const [image, setImage] = useState();
 
+   
     const {
         register,
         handleSubmit,
@@ -33,12 +24,17 @@ function FormProduct({ onUpdate }) {
         formState: { errors },
     } = useForm({
         mode: 'onChange',
-        defaultValues: {},
+        defaultValues: {
+            name: '',
+            price:'',
+            amount: '',
+            categories:'',
+        },
     });
 
     function onGoodsReceiptChange(date) {
         setGoodsReceipt(date);
-        // setValue('saleTime', date);
+        setValue('goodsReceipt', date);
     }
 
     const handleClearImage = (args) => {
@@ -46,12 +42,16 @@ function FormProduct({ onUpdate }) {
     };
 
     const handleChangeImage = (file) => {
-        firebaseUploadImage (file)
+        firebaseUploadImage(file)
             .then((result) => {
                 setValue('image', result);
                 setImage(result);
             })
             .catch((err) => console.log(err));
+    };
+
+    const onEditorChange = (args) => {
+        setValue('details', args.value);
     };
 
     useEffect(() => {
@@ -61,7 +61,7 @@ function FormProduct({ onUpdate }) {
     }, []);
 
     return (
-        <form onSubmit={handleSubmit(onUpdate)} className='space-y-2'>
+        <form onSubmit={handleSubmit(onUpdate)} className='space-y-3 w-full'>
             <InputForm
                 lable='Name'
                 type='text'
@@ -72,55 +72,61 @@ function FormProduct({ onUpdate }) {
                 message='Please enter a name.'
                 required
             />
-            <InputForm
-                lable='Price'
-                type='number'
-                placeholder='Price'
-                name='price'
-                register={register}
-                errors={errors}
-                message='Please enter a price.'
-                required
-            />
-            <InputForm
-                lable='Amount'
-                type='number'
-                placeholder='Amount'
-                name='amount'
-                register={register}
-                errors={errors}
-                message='Please enter a amount.'
-                required
-            />
-            <div className='input-container-row'>
-                <label className='input-lable'>Goods Receipts</label>
-                <div className='w-1/2'>
-                    <DatePicker
-                        selected={new Date()}
-                        onChange={(date) => onGoodsReceiptChange(date)}
-                        className='input-form'
-                        value={formatDate(goodsReceipt)}
-                        locale='vi-VI'
+            <div className='flex w-full space-x-10 pt-2'>
+                <div className='flex-1'>
+                    <InputForm
+                        lable='Price'
+                        type='number'
+                        placeholder='Price'
+                        name='price'
+                        register={register}
+                        errors={errors}
+                        message='Please enter a price.'
+                        required
+                    />
+                </div>
+                <div className='flex-1'>
+                    <InputForm
+                        lable='Amount'
+                        type='number'
+                        placeholder='Amount'
+                        name='amount'
+                        register={register}
+                        errors={errors}
+                        message='Please enter a amount.'
+                        required
                     />
                 </div>
             </div>
-            <div className='input-container-row'>
-                <label className='input-lable'>Categories</label>
-                <label>
-                    <select
-                        id='categories'
-                        name='categories'
-                        className='input-form'
-                        {...register('categories', { required: true })}
-                    >
-                        {categories?.map((categories) => (
-                            <option key={categories.code} value={categories.name}>
-                                {categories.name}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.categories && <p className='input-lable-warning'>Please choose categories.</p>}
-                </label>
+            <div className='flex w-full space-x-10'>
+                <div className='flex-1'>
+                    <div className='input-container-row'>
+                        <label className='input-lable'>Goods Receipts</label>
+                        <DatePicker
+                            selected={new Date()}
+                            onChange={(date) => onGoodsReceiptChange(date)}
+                            className='input-form'
+                            value={formatDate(goodsReceipt)}
+                            locale='vi-VI'
+                        />
+                    </div>
+                </div>
+
+                <div className='flex-1'>
+                    {categories && (
+                        <DropDown
+                            label='Categories'
+                            name='categories'
+                            register={register}
+                            errors={errors}
+                            required
+                            data={categories}
+                            k='code'
+                            v='name'
+                            message='Please choose categories.'
+                        />
+                    )}
+                </div>
             </div>
             <DragAndDropImage
                 label='Image'
@@ -133,12 +139,17 @@ function FormProduct({ onUpdate }) {
                 labelStyle='input-lable'
                 onDeleteImage={handleClearImage}
             />
+            <Editor label='Details' onChange={onEditorChange} />
             <div className='input-container-row'>
-                <label className='input-lable'>Details</label>
-                <RichTextEditorComponent>
-                    <Inject services={[HtmlEditor, Toolbar, Image, Link, QuickToolbar]} />
-                    <EditorData />
-                </RichTextEditorComponent>
+                <ActionButton
+                    text='Save'
+                    bgColor={currentColor}
+                    color='white'
+                    borderRadius={5}
+                    width='full'
+                    type='submit'
+                    customeStyle='mt-5'
+                />
             </div>
         </form>
     );

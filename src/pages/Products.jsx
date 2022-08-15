@@ -35,7 +35,6 @@ function Products() {
     if(isSuccess){
         products = [...data];
         console.log(products)
-        
     }
 
     function actionBegin(args) {
@@ -48,7 +47,8 @@ function Products() {
     }
 
     function actionComplete(args) {
-        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+    
+        if (args.requestType === 'beginEdit' || args.requestType === 'add' ) {
             if (Browser.isDevice) {
                 args.dialog.dataBind();
             }
@@ -94,6 +94,7 @@ function Products() {
                     to='/products/add'
                 />
             </div>
+        
             <GridComponent
                 id='gridcomp'
                 dataSource={products}
