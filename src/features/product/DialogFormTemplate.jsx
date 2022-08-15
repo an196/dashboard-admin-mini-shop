@@ -45,7 +45,7 @@ export default class DialogFormTemplate extends SampleBase {
         ]);
         this.setState({ categories: result[0] });
     }
-
+    
     render() {
         const data = this.state;
         return (
@@ -114,7 +114,7 @@ export default class DialogFormTemplate extends SampleBase {
                     />
                     <div className='mt-2'>
                         <NavLink
-                            to={`/products/add/${data._id}`}
+                            to={`/products/update/${data._id}`}
                             className={`flex flex-row w-full underline  underline-offset-auto items-center space-x-1
                              hover:text-blue-900 hover:font-medium`}
                         >

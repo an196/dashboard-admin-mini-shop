@@ -17,6 +17,7 @@ function UpdateProduct() {
     
     if(isSuccess){
          product = {...data};
+         console.log(product)
     }
 
     const onUpdate = (props) => {

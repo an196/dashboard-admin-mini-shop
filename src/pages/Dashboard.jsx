@@ -31,6 +31,7 @@ import {
 
 import CreateEmployee from '../features/employee/CreateEmployee';
 import CreateProduct from '../features/product/CreateProduct';
+import UpdateProduct from '../features/product/UpdateProduct';
 
 function Dashboard() {
     const { activeMenu, themeSettings, setThemeSettings, currentColor, currentMode } = useStateContext();
@@ -85,7 +86,7 @@ function Dashboard() {
                             <Route path='/customers' element={<Customers />} />
                             <Route path='/products' element={<Products />} />
                             <Route path='/products/add' element={<CreateProduct />} />
-                            <Route path='/products/add/:id' element={<CreateProduct />} />
+                            <Route path='/products/update/:id' element={<UpdateProduct />} />
                             <Route path='/categories' element={<Category />} />
                             <Route path='/banner' element={<Banner />} />
 
