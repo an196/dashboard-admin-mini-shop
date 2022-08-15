@@ -7,14 +7,14 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 
-function FormProduct({ onUpdate }) {
+function FormProduct({ onUpdate, product }) {
     const { currentColor } = useStateContext();
     const [goodsReceipt, setGoodsReceipt] = useState(new Date());
     const [categories, setCategories] = useState();
     const [imageLoading, setImageLoading] = useState(false);
     const [image, setImage] = useState();
 
-   
+
     const {
         register,
         handleSubmit,
@@ -26,7 +26,7 @@ function FormProduct({ onUpdate }) {
         mode: 'onChange',
         defaultValues: {
             name: '',
-            price:'',
+            price: '',
             amount: '',
             categories:'',
         },
@@ -60,6 +60,11 @@ function FormProduct({ onUpdate }) {
         });
     }, []);
 
+    useEffect(()=> {
+        setImage(product.image);
+        setCategories(product.categories);
+        setGoodsReceipt(product.goodsReceipt);
+    }, [])
     return (
         <form onSubmit={handleSubmit(onUpdate)} className='space-y-3 w-full'>
             <InputForm
@@ -132,7 +137,7 @@ function FormProduct({ onUpdate }) {
                 label='Image'
                 loading={imageLoading.loading}
                 handleImageChange={handleChangeImage}
-                image={image}
+                image={image || ''}
                 imageStyle='w-[150px] h-[150px]'
                 name='image'
                 containerStyle='input-container-row'
