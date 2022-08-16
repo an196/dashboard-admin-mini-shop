@@ -22,7 +22,7 @@ export class DialogFormTemplate extends SampleBase {
     }
 
     uploadImage(file) {
-        firebaseUploadImage(file).then((result) => {
+        firebaseUploadImage(file,'employee').then((result) => {
             this.setState({ imgProfile: result });
         });
     }

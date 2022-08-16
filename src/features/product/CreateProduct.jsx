@@ -1,14 +1,14 @@
 import React from 'react';
 import { Header } from '../../components';
 import FormProduct from './FormProduct';
-import { useCreateProductMutation, useUpdateProductMutation, useGetProductQuery } from './productApiSlice';
+import { useCreateProductMutation } from './productApiSlice';
 import toast from 'react-hot-toast';
-import { useParams } from "react-router-dom";
 
 function CreateProduct() {
     const [createProduct] = useCreateProductMutation();
 
     const onUpdate = (props) => {
+        console.log(props)
         createProduct(props)
             .then(() => toast.success('Create product successful'))
             .catch(() => toast.error('Create product failure'));
