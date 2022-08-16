@@ -1,11 +1,26 @@
 import { formatDate } from '../../utils/helper/format';
 import { FiEdit } from 'react-icons/fi';
 
+import productFallback from '../../assets/product-fallback.png';
+
+const getImage = (images) => {
+    if(images){
+        if(images.length > 1){
+            return images[0]
+        }
+        if(images.length === 1){
+            return images
+        }
+    }
+    
+    return productFallback;
+}
+
 const gridImage = (props) => (
     <div className='flex items-center gap-2 justify-center'>
         <img
             className='rounded w-10 h-10'
-            src={props?.image?.length > 1 ? props?.image[0] : props?.image}
+            src={getImage(props.image)}
             alt='product'
         />
     </div>

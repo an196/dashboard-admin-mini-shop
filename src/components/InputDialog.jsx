@@ -4,7 +4,7 @@ function InputDialog({value, name, type, onChange, label, disable, hidden}) {
     return (
         <div className={`e-float-input e-control-wrapper`}>
             <input
-                value={value}
+                value={value || ''}
                 id={name}
                 name={name}
                 type={type}

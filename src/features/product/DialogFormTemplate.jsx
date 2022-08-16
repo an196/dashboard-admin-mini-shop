@@ -1,17 +1,20 @@
 import React from 'react';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import { InputDialog, DragAndDropImage } from '../../components';
+import { InputDialog, DragAndDropImage, DeleteButton } from '../../components';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 import { SampleBase } from '../../components/Base/SampleBase';
 import { NavLink } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
+import toast from 'react-hot-toast';
+import { formatDate } from '../../utils/helper/format';
 
 export default class DialogFormTemplate extends SampleBase {
     constructor(props) {
         super(props);
         this.state = Object.assign({}, props);
         this.state.categories = [];
+        this.state.images = props.image;
     }
 
     onChange(args) {
@@ -25,14 +28,16 @@ export default class DialogFormTemplate extends SampleBase {
     }
 
     uploadImage(file) {
-        firebaseUploadImage(file).then((result) => {
-            if (this.state.image) {
-                this.setState({ image: [result] });
-            } else {
-                this.setState({ image: [result] });
+        firebaseUploadImage(file, 'product').then((result) => {
+            if (this.state.images) {
+                this.setState({ images: [ ...this.state.images, result] });
             }
         });
     }
+
+    handleClearImage = (image) => {
+        this.setState({images: this.state.images.filter((_image) => _image !== image)});
+    };
 
     componentDidMount() {
         // Set initail Focus
@@ -45,7 +50,7 @@ export default class DialogFormTemplate extends SampleBase {
         ]);
         this.setState({ categories: result[0] });
     }
-    
+
     render() {
         const data = this.state;
         return (
@@ -79,18 +84,27 @@ export default class DialogFormTemplate extends SampleBase {
                         label='Cover photo'
                         loading={data.loading}
                         handleImageChange={this.uploadImage.bind(this)}
-                        image={data.image}
+                        image={ ''}
                         imageStyle='w-[150px] h-[150px]'
                         name='image'
                         containerStyle='input-container-row'
                         labelStyle='e-control-wrapper'
                         onChange={this.onChange.bind(this)}
-                        onDeleteImage={() => this.setState({ image: '' })}
+                        deleteButtonStyle='left-0'
                     />
+                    
+                    <div className='input-container-row  flex-row flex-wrap '>
+                        {this.state.images.map((image) => (
+                            <div className='relative h-full m-2 w-[150px]' key={image}>
+                                <img src={image} className={`w-[150px] h-[150px]`} />
+                                <DeleteButton className='left-0' onClick={() => this.handleClearImage(image)} />
+                            </div>
+                        ))}
+                    </div>
                     <DatePickerComponent
                         id='goodsReceipts'
                         name='goodsReceipts'
-                        value={data.goodsReceipts}
+                        value={formatDate(data.goodsReceipts)}
                         placeholder='Goods Receipts'
                         floatLabelType='Always'
                         format='dd/MM/yyyy'

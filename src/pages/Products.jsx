@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 //Synfusion
 import {
     GridComponent,
@@ -10,9 +10,14 @@ import {
     Toolbar,
     Edit,
 } from '@syncfusion/ej2-react-grids';
-import { useGetProductsQuery,useDeleteProductMutation, useCreateProductMutation, useUpdateProductMutation } from '../features/product/productApiSlice';
+import {
+    useGetProductsQuery,
+    useDeleteProductMutation,
+    useCreateProductMutation,
+    useUpdateProductMutation,
+} from '../features/product/productApiSlice';
 import { productGrid } from '../features/product/productGrid';
-import { Header, ActionButton } from '../components';
+import { Header, ActionButton, AlertModal } from '../components';
 import DialogFormTemplate from '../features/product/DialogFormTemplate';
 import { Browser, extend } from '@syncfusion/ej2-base';
 import { useStateContext } from '../context/ContextProvider';
@@ -20,7 +25,14 @@ import { useStateContext } from '../context/ContextProvider';
 function Products() {
     //table
     const toolbarOptions = ['Add', 'Delete', 'Search', 'Edit', 'Update', 'Cancel'];
-    const editing = { allowDeleting: true, allowEditing: true, mode: 'Dialog', allowAdding: true, template: dialogTemplate };
+    const editing = {
+        allowDeleting: true,
+        allowEditing: true,
+        mode: 'Dialog',
+        allowAdding: true,
+        template: dialogTemplate,
+    };
+    const [showModal, setShowModal] = useState(true);
 
     //rtk query
     const { data, isSuccess } = useGetProductsQuery();
@@ -29,26 +41,26 @@ function Products() {
     const [updateProduct] = useUpdateProductMutation();
 
     //context
-    const {currentColor} = useStateContext();
+    const { currentColor } = useStateContext();
     let products;
-   
-    if(isSuccess){
+
+    if (isSuccess) {
         products = [...data];
-        console.log(products)
+        console.log(products);
     }
 
     function actionBegin(args) {
         if (args.requestType === 'delete') {
             console.log(args.data[0]);
+
             //triggers while deleting the record
-            const id = args.data[0]?._id;
-            deleteProduct(id);
+            // const id = args.data[0]?._id;
+            // deleteProduct(id);
         }
     }
 
     function actionComplete(args) {
-    
-        if (args.requestType === 'beginEdit' || args.requestType === 'add' ) {
+        if (args.requestType === 'beginEdit' || args.requestType === 'add') {
             if (Browser.isDevice) {
                 args.dialog.dataBind();
             }
@@ -61,7 +73,7 @@ function Products() {
 
         if (args.requestType === 'save' && args.form) {
             if (args.data.goodsID) {
-                console.log(args.data)
+                console.log(args.data);
                 updateProduct(args.data)
                     .unwrap()
                     .then((data) => console.log(data))
@@ -79,6 +91,14 @@ function Products() {
         return <DialogFormTemplate {...props} />;
     }
 
+    useEffect(() => {
+        if (isSuccess) {
+            const modal = document.getElementById('alertModal');
+            const a = <AlertModal/>
+            console.log(a);
+            modal.appendChild()
+        }
+    }, []);
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
             <div className='flex justify-between items-center'>
@@ -94,7 +114,7 @@ function Products() {
                     to='/products/add'
                 />
             </div>
-        
+
             <GridComponent
                 id='gridcomp'
                 dataSource={products}

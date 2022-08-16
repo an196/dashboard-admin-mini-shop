@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 const storage = getStorage(firebase);
 
-export const firebaseUploadImage = (file) => {
+export const firebaseUploadImage = (file, folder) => {
 
     return new Promise((resolve ,reject) =>{
         let state = {
@@ -29,7 +29,7 @@ export const firebaseUploadImage = (file) => {
             var metadata = {
                 contentType: file.type,
             };
-            const storageRef = ref(storage, 'profile/' + file.name);
+            const storageRef = ref(storage, folder + '/' + file.name);
             var uploadTask = uploadBytesResumable(storageRef, file, metadata);
     
             // Listen for state changes, errors, and completion of the upload.
