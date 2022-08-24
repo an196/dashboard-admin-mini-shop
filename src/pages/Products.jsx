@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 //Synfusion
 import {
     GridComponent,
@@ -20,19 +20,32 @@ import { productGrid } from '../features/product/productGrid';
 import { Header, ActionButton, AlertModal } from '../components';
 import DialogFormTemplate from '../features/product/DialogFormTemplate';
 import { Browser, extend } from '@syncfusion/ej2-base';
+import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import { useStateContext } from '../context/ContextProvider';
 
 function Products() {
     //table
-    const toolbarOptions = ['Add', 'Delete', 'Search', 'Edit', 'Update', 'Cancel'];
+    const toolbarOptions = [
+        'Add',
+        {
+            text: 'Delete',
+            tooltipText: 'Delete',
+            prefixIcon: 'e-delete',
+            id: 'delete',
+        },
+        'Search',
+        'Edit',
+        'Update',
+        'Cancel',
+    ];
     const editing = {
         allowDeleting: true,
         allowEditing: true,
         mode: 'Dialog',
         allowAdding: true,
         template: dialogTemplate,
+        showConfirmDialog: false,
     };
-    const [showModal, setShowModal] = useState(true);
 
     //rtk query
     const { data, isSuccess } = useGetProductsQuery();
@@ -42,20 +55,61 @@ function Products() {
 
     //context
     const { currentColor } = useStateContext();
+
+    //define variable
     let products;
+    let grid;
+    let dialogInstance = useRef();
+    let gridInstance = useRef();
+    let isDelete = false;
+    let buttons = [
+        {
+            buttonModel: {
+                content: 'OK',
+                cssClass: 'e-flat',
+                isPrimary: true,
+            },
+            click: () => confirmationClick(),
+        },
+        {
+            buttonModel: {
+                content: 'Cancel',
+                cssClass: 'e-flat',
+            },
+            click: () => cancelClick(),
+        },
+    ];
+
+    let buttons1 = [
+        {
+            buttonModel: {
+                content: 'OK',
+                cssClass: 'e-flat',
+                isPrimary: true,
+            },
+            click: () => {
+                dialogInstance.hide();
+            },
+        },
+    ];
 
     if (isSuccess) {
         products = [...data];
-        console.log(products);
     }
 
     function actionBegin(args) {
+        if (args.requestType === 'beginEdit') {
+            gridInstance.toolbarModule.toolbar.enableItems(2, false);
+        }
+        if (args.requestType === 'save') {
+            gridInstance.toolbarModule.toolbar.enableItems(2, true);
+        }
+
         if (args.requestType === 'delete') {
             console.log(args.data[0]);
-
             //triggers while deleting the record
-            // const id = args.data[0]?._id;
-            // deleteProduct(id);
+            const id = args.data[0]?._id;
+            deleteProduct(id);
         }
     }
 
@@ -73,7 +127,6 @@ function Products() {
 
         if (args.requestType === 'save' && args.form) {
             if (args.data.goodsID) {
-                console.log(args.data);
                 updateProduct(args.data)
                     .unwrap()
                     .then((data) => console.log(data))
@@ -91,17 +144,36 @@ function Products() {
         return <DialogFormTemplate {...props} />;
     }
 
-    useEffect(() => {
-        if (isSuccess) {
-            const modal = document.getElementById('alertModal');
-            const a = <AlertModal/>
-            console.log(a);
-            modal.appendChild()
+    function toolbarClick(args) {
+       
+        dialogInstance.buttons = buttons;
+        if (args.item.id === 'delete') {
+            if (gridInstance.getSelectedRecords().length !== 0) {
+                isDelete = true;
+                dialogInstance.content = 'Do you wish to delete the selected record?';
+                dialogInstance.show();
+            } else {
+                dialogInstance.content = 'No record selected for deletion';
+                dialogInstance.buttons = buttons1;
+                dialogInstance.show();
+            }
         }
-    }, []);
+    }
+
+    function confirmationClick(args) {
+        if (isDelete) {
+            isDelete = false;
+            dialogInstance.hide();
+            gridInstance.deleteRecord();
+        }
+    }
+    function cancelClick(args) {
+        dialogInstance.hide();
+    }
+
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center'>
+            <div className='flex justify-between items-center' id='dialog-target'>
                 <Header category='Page' title='Products' />
                 <ActionButton
                     color='white'
@@ -117,6 +189,7 @@ function Products() {
 
             <GridComponent
                 id='gridcomp'
+                ref={(grid) => (gridInstance = grid)}
                 dataSource={products}
                 allowPaging
                 allowSorting
@@ -125,6 +198,7 @@ function Products() {
                 editSettings={editing}
                 actionBegin={actionBegin}
                 actionComplete={actionComplete}
+                toolbarClick={toolbarClick}
             >
                 <ColumnsDirective>
                     {productGrid.map((item, index) => (
@@ -133,6 +207,13 @@ function Products() {
                 </ColumnsDirective>
                 <Inject services={[Page, Search, Toolbar, Edit]} />
             </GridComponent>
+            <DialogComponent
+                width='300px'
+                target='#dialog-target'
+                visible={false}
+                isModal={true}
+                ref={(dialog) => (dialogInstance = dialog)}
+            />
         </div>
     );
 }
