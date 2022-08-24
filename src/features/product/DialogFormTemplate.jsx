@@ -14,7 +14,7 @@ export default class DialogFormTemplate extends SampleBase {
         super(props);
         this.state = Object.assign({}, props);
         this.state.categories = [];
-        this.state.images = props.image;
+        this.state.images = props.image ?? [];
     }
 
     onChange(args) {
@@ -30,6 +30,7 @@ export default class DialogFormTemplate extends SampleBase {
     uploadImage(file) {
         firebaseUploadImage(file, 'product').then((result) => {
             if (this.state.images) {
+
                 this.setState({ images: [ ...this.state.images, result] });
             }
         });
@@ -94,7 +95,7 @@ export default class DialogFormTemplate extends SampleBase {
                     />
                     
                     <div className='input-container-row  flex-row flex-wrap '>
-                        {this.state.images.map((image) => (
+                        {this.state.images?.map((image) => (
                             <div className='relative h-full m-2 w-[150px]' key={image}>
                                 <img src={image} className={`w-[150px] h-[150px]`} />
                                 <DeleteButton className='left-0' onClick={() => this.handleClearImage(image)} />

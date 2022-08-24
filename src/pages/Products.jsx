@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {  useRef } from 'react';
 //Synfusion
 import {
     GridComponent,
@@ -38,6 +38,7 @@ function Products() {
         'Update',
         'Cancel',
     ];
+
     const editing = {
         allowDeleting: true,
         allowEditing: true,
@@ -58,7 +59,6 @@ function Products() {
 
     //define variable
     let products;
-    let grid;
     let dialogInstance = useRef();
     let gridInstance = useRef();
     let isDelete = false;
@@ -201,7 +201,7 @@ function Products() {
                 toolbarClick={toolbarClick}
             >
                 <ColumnsDirective>
-                    {productGrid.map((item, index) => (
+                    {productGrid?.map((item, index) => (
                         <ColumnDirective key={index} {...item} />
                     ))}
                 </ColumnsDirective>

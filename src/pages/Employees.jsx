@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback,useMemo } from 'react';
+import React, { useRef } from 'react';
 //Synfusion
 import {
     GridComponent,
@@ -8,7 +8,7 @@ import {
     Search,
     Inject,
     Toolbar,
-    Edit
+    Edit,
 } from '@syncfusion/ej2-react-grids';
 import { Browser, extend } from '@syncfusion/ej2-base';
 
@@ -19,31 +19,85 @@ import {
     useGetEmployeesQuery,
     useDeleteEmployeeMutation,
     useUpdateEmployeeMutation,
-    useCreateEmployeeMutation
+    useCreateEmployeeMutation,
 } from '../features/employee/employeeApiSlice';
 import { ActionButton } from '../components';
+import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import { useStateContext } from '../context/ContextProvider';
 
 function Employees() {
-    const toolbarOptions = ['Add','Delete', 'Search', 'Edit', 'Update', 'Cancel'];
-    const editing = { allowDeleting: true, allowEditing: true, allowAdding: true, mode: 'Dialog', template: dialogTemplate };
+    const toolbarOptions = [
+        'Add',
+        {
+            text: 'Delete',
+            tooltipText: 'Delete',
+            prefixIcon: 'e-delete',
+            id: 'delete',
+        },
+        'Search',
+        'Edit',
+        'Update',
+        'Cancel',
+    ];
+
+    const editing = {
+        allowDeleting: true,
+        allowEditing: true,
+        allowAdding: true,
+        mode: 'Dialog',
+        template: dialogTemplate,
+        showConfirmDialog: false,
+    };
 
     const { currentColor } = useStateContext();
 
-
     const { data, isLoading, isSuccess, isError, error } = useGetEmployeesQuery();
-    const [deleteEmployee, ] = useDeleteEmployeeMutation();
+    const [deleteEmployee] = useDeleteEmployeeMutation();
     const [updateEmployee] = useUpdateEmployeeMutation();
     const [createEmployee] = useCreateEmployeeMutation();
-    
+
     let employees;
+    let dialogInstance = useRef();
+    let gridInstance = useRef();
+    let isDelete = false;
+    let buttons = [
+        {
+            buttonModel: {
+                content: 'OK',
+                cssClass: 'e-flat',
+                isPrimary: true,
+            },
+            click: () => confirmationClick(),
+        },
+        {
+            buttonModel: {
+                content: 'Cancel',
+                cssClass: 'e-flat',
+            },
+            click: () => cancelClick(),
+        },
+    ];
+
+    let buttons1 = [
+        {
+            buttonModel: {
+                content: 'OK',
+                cssClass: 'e-flat',
+                isPrimary: true,
+            },
+            click: () => {
+                dialogInstance.hide();
+            },
+        },
+    ];
+
     if (isLoading) {
         <p>"Loading..."</p>;
     }
 
     if (isSuccess) {
         employees = [...data];
-        console.log(employees)
+        console.log(employees);
     }
 
     if (isError) {
@@ -53,20 +107,22 @@ function Employees() {
     const handleDelete = (id) => {
         deleteEmployee(id)
             .unwrap()
-            .then((data) => {
-            })
+            .then((data) => {})
             .catch((err) => console.log(err));
     };
 
-
-
     function actionBegin(args) {
+        if (args.requestType === 'beginEdit') {
+            gridInstance.toolbarModule.toolbar.enableItems(2, false);
+        }
+        if (args.requestType === 'save') {
+            gridInstance.toolbarModule.toolbar.enableItems(2, true);
+        }
         if (args.requestType === 'delete') {
             //triggers while deleting the record
             const id = args.data[0]?._id;
             handleDelete(id);
         }
-       
     }
 
     function actionComplete(args) {
@@ -78,39 +134,62 @@ function Employees() {
 
             const dialog = args.dialog;
             // change the header of the dialog
-            dialog.header = args.requestType === 'beginEdit' ? 'Edit Employee ' + args.rowData['employeeID'] : 'New Employee';
+            dialog.header =
+                args.requestType === 'beginEdit' ? 'Edit Employee ' + args.rowData['employeeID'] : 'New Employee';
         }
 
         if (args.requestType === 'save' && args.form) {
-             console.log(args.data)
-          
-            if(args.data.employeeID){
+            console.log(args.data);
+
+            if (args.data.employeeID) {
                 updateEmployee(args.data)
-                .unwrap()
-                .then((data) => console.log(data))
-                .catch((err) => console.log(err));
-            }
-            else{
+                    .unwrap()
+                    .then((data) => console.log(data))
+                    .catch((err) => console.log(err));
+            } else {
                 createEmployee(args.data)
-                .unwrap()
-                .then((data) => console.log(data))
-                .catch((err) => console.log(err));
+                    .unwrap()
+                    .then((data) => console.log(data))
+                    .catch((err) => console.log(err));
             }
         }
     }
 
-    function actionFailure(args) {
-        
-    }
+    function actionFailure(args) {}
 
     function dialogTemplate(props) {
         return <DialogFormTemplate {...props} />;
     }
 
+    function toolbarClick(args) {
+        dialogInstance.buttons = buttons;
+        if (args.item.id === 'delete') {
+            if (gridInstance.getSelectedRecords().length !== 0) {
+                isDelete = true;
+                dialogInstance.content = 'Do you wish to delete the selected record?';
+                dialogInstance.show();
+            } else {
+                dialogInstance.content = 'No record selected for deletion';
+                dialogInstance.buttons = buttons1;
+                dialogInstance.show();
+            }
+        }
+    }
 
+    function confirmationClick(args) {
+        if (isDelete) {
+            isDelete = false;
+            dialogInstance.hide();
+            gridInstance.deleteRecord();
+        }
+    }
+
+    function cancelClick(args) {
+        dialogInstance.hide();
+    }
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center'>
+            <div className='flex justify-between items-center'  id='dialog-target'>
                 <Header category='Page' title='Employees' />
                 <ActionButton
                     color='white'
@@ -125,6 +204,7 @@ function Employees() {
             </div>
             <GridComponent
                 id='gridcomp'
+                ref={(grid) => (gridInstance = grid)}
                 dataSource={employees}
                 allowPaging
                 allowSorting
@@ -134,6 +214,7 @@ function Employees() {
                 actionBegin={actionBegin.bind(this)}
                 actionComplete={actionComplete.bind(this)}
                 actionFailure={actionFailure.bind}
+                toolbarClick={toolbarClick}
             >
                 <ColumnsDirective>
                     {employeesGrid.map((item, index) => (
@@ -142,6 +223,13 @@ function Employees() {
                 </ColumnsDirective>
                 <Inject services={[Page, Search, Toolbar, Edit]} />
             </GridComponent>
+            <DialogComponent
+                width='300px'
+                target='#dialog-target'
+                visible={false}
+                isModal={true}
+                ref={(dialog) => (dialogInstance = dialog)}
+            />
         </div>
     );
 }
