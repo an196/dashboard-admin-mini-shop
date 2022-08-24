@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo, useState } from 'react';
+import React, { useRef } from 'react';
 //Synfusion
 import {
     GridComponent,
@@ -11,6 +11,7 @@ import {
     Edit,
 } from '@syncfusion/ej2-react-grids';
 import { Browser, extend } from '@syncfusion/ej2-base';
+import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import {
     useGetCategoriesQuery,
     useUpdateCategoryMutation,
@@ -22,13 +23,26 @@ import { categoryGrid } from '../features/category/categoryGrid';
 import { Header } from '../components';
 
 function Category() {
-    const toolbarOptions = ['Add', 'Delete', 'Search', 'Edit', 'Update', 'Cancel'];
+    const toolbarOptions = [
+        'Add',
+        {
+            text: 'Delete',
+            tooltipText: 'Delete',
+            prefixIcon: 'e-delete',
+            id: 'delete',
+        },
+        'Search',
+        'Edit',
+        'Update',
+        'Cancel',
+    ];
     const editing = {
         allowDeleting: true,
         allowEditing: true,
         allowAdding: true,
         mode: 'Dialog',
         template: dialogTemplate,
+        showConfirmDialog: false,
     };
     const { data, isLoading, isSuccess, isError, error } = useGetCategoriesQuery();
     const [updateCategory] = useUpdateCategoryMutation();
@@ -36,6 +50,41 @@ function Category() {
     const [createCategory] = useCreateCategoryMutation();
 
     let categories;
+    //define variable
+    let products;
+    let dialogInstance = useRef();
+    let gridInstance = useRef();
+    let isDelete = false;
+    let buttons = [
+        {
+            buttonModel: {
+                content: 'OK',
+                cssClass: 'e-flat',
+                isPrimary: true,
+            },
+            click: () => confirmationClick(),
+        },
+        {
+            buttonModel: {
+                content: 'Cancel',
+                cssClass: 'e-flat',
+            },
+            click: () => cancelClick(),
+        },
+    ];
+
+    let buttons1 = [
+        {
+            buttonModel: {
+                content: 'OK',
+                cssClass: 'e-flat',
+                isPrimary: true,
+            },
+            click: () => {
+                dialogInstance.hide();
+            },
+        },
+    ];
 
     if (isSuccess) {
         categories = [...data];
@@ -49,6 +98,13 @@ function Category() {
     };
 
     function actionBegin(args) {
+        if (args.requestType === 'beginEdit') {
+            gridInstance.toolbarModule.toolbar.enableItems(2, false);
+        }
+        if (args.requestType === 'save') {
+            gridInstance.toolbarModule.toolbar.enableItems(2, true);
+        }
+
         if (args.requestType === 'delete') {
             console.log(args.data[0]);
             //triggers while deleting the record
@@ -88,14 +144,42 @@ function Category() {
         return <DialogFormTemplate {...props} />;
     }
 
+    function toolbarClick(args) {
+       
+        dialogInstance.buttons = buttons;
+        if (args.item.id === 'delete') {
+            if (gridInstance.getSelectedRecords().length !== 0) {
+                isDelete = true;
+                dialogInstance.content = 'Do you wish to delete the selected record?';
+                dialogInstance.show();
+            } else {
+                dialogInstance.content = 'No record selected for deletion';
+                dialogInstance.buttons = buttons1;
+                dialogInstance.show();
+            }
+        }
+    }
+
+    function confirmationClick(args) {
+        if (isDelete) {
+            isDelete = false;
+            dialogInstance.hide();
+            gridInstance.deleteRecord();
+        }
+    }
+    function cancelClick(args) {
+        dialogInstance.hide();
+    }
+
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center'>
+            <div className='flex justify-between items-center' id='dialog-target'>
                 <Header category='Page' title='Categories' />
             </div>
 
             <GridComponent
                 id='gridcomp'
+                ref={(grid) => (gridInstance = grid)}
                 dataSource={categories}
                 allowPaging
                 allowSorting
@@ -104,6 +188,7 @@ function Category() {
                 editSettings={editing}
                 actionBegin={actionBegin}
                 actionComplete={actionComplete}
+                toolbarClick={toolbarClick}
             >
                 <ColumnsDirective>
                     {categoryGrid.map((item, index) => (
@@ -112,6 +197,13 @@ function Category() {
                 </ColumnsDirective>
                 <Inject services={[Page, Search, Toolbar, Edit]} />
             </GridComponent>
+            <DialogComponent
+                width='300px'
+                target='#dialog-target'
+                visible={false}
+                isModal={true}
+                ref={(dialog) => (dialogInstance = dialog)}
+            />
         </div>
     );
 }
