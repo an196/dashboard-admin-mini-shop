@@ -13,14 +13,12 @@ function UpdateProduct() {
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
 
-    console.log(params);
-
     if (isSuccess) {
         product = { ...data };
-        console.log(product);
     }
    
     const onUpdate = (props) => {
+        console.log(props)
         updateProduct(props)
             .then(() => toast.success('Update product successful'))
             .catch(() => toast.error('Update product failure'));

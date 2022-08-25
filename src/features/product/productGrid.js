@@ -4,6 +4,8 @@ import { FiEdit } from 'react-icons/fi';
 import productFallback from '../../assets/product-fallback.png';
 
 const getImage = (images) => {
+
+    console.log(images)
     if(images){
         if(images.length > 1){
             return images[0]
@@ -12,8 +14,10 @@ const getImage = (images) => {
             return images
         }
     }
+    else if(images === '')
+        return productFallback;
     
-    return productFallback;
+        return productFallback;
 }
 
 const gridImage = (props) => (

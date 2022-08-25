@@ -18,13 +18,13 @@ import UnitInput from './UnitInput';
 
 function FormProduct({ onUpdate, product }) {
     const { currentColor } = useStateContext();
-    const [goodsReceipt, setGoodsReceipt] = useState(new Date());
+    const [goodsReceipts, setGoodsReceipts] = useState();
     const [categories, setCategories] = useState();
+    const [details, setDetails] = useState();
     const [imageLoading, setImageLoading] = useState(false);
     const [images, setImages] = useState([]);
     const [image, setImage] = useState();
-
-    console.log(product);
+   
     const {
         register,
         handleSubmit,
@@ -42,7 +42,7 @@ function FormProduct({ onUpdate, product }) {
     });
 
     function onGoodsReceiptChange(date) {
-        setGoodsReceipt(date);
+        setGoodsReceipts(date);
         setValue('goodsReceipts', date);
     }
 
@@ -67,6 +67,7 @@ function FormProduct({ onUpdate, product }) {
     };
 
     const onEditorChange = (args) => {
+        console.log(args)
         setValue('details', args.value);
     };
 
@@ -78,16 +79,25 @@ function FormProduct({ onUpdate, product }) {
 
     useEffect(() => {
         if (product) {
-            setImages(product.image);
-            setCategories(product.categories);
-            setGoodsReceipt(product.goodsReceipt);
+            setImages( product.image);
+            setGoodsReceipts(product.goodsReceipts);
+            setDetails(product.details);
+            
+            setValue('_id', product._id);
+            setValue('image',product.image);
+            setValue('category',product.categories);
+            setValue('goodsReceipts', product?.goodsReceipts);
+            setValue('details', product.details);
         } else {
             //set form info
             if (categories) setValue('category', categories[0]['code']);
             setValue('goodsReceipts', Date());
+            setGoodsReceipts(new Date());
         }
     }, []);
 
+    
+    console.log(product)
     return (
         <form onSubmit={handleSubmit(onUpdate)} className='space-y-3 w-full'>
             <InputForm
@@ -129,10 +139,10 @@ function FormProduct({ onUpdate, product }) {
                     <div className='input-container-row'>
                         <label className='input-lable'>Goods Receipts</label>
                         <DatePicker
-                            selected={new Date()}
+                            selected={new Date(goodsReceipts)}
                             onChange={(date) => onGoodsReceiptChange(date)}
                             className='input-form'
-                            value={formatDate(goodsReceipt)}
+                            value={formatDate(goodsReceipts)}
                             locale='vi-VI'
                         />
                     </div>
@@ -175,7 +185,7 @@ function FormProduct({ onUpdate, product }) {
                     </div>
                 ))}
             </div>
-            <Editor label='Details' onChange={onEditorChange} />
+            <Editor label='Details' onChange={onEditorChange} value={product?.details ?? ''} />
             <div className='input-container-row'>
                 <ActionButton
                     text='Save'
