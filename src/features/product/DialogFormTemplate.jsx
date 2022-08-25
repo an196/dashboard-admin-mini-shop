@@ -15,6 +15,7 @@ export default class DialogFormTemplate extends SampleBase {
         this.state = Object.assign({}, props);
         this.state.categories = [];
         this.state.images = props.image ?? [];
+        this.state.stringImages=props.image.toString() ?? '';
     }
 
     onChange(args) {
@@ -30,14 +31,21 @@ export default class DialogFormTemplate extends SampleBase {
     uploadImage(file) {
         firebaseUploadImage(file, 'product').then((result) => {
             if (this.state.images) {
-
-                this.setState({ images: [ ...this.state.images, result] });
+                this.setState({ images: [...this.state.images, result] });
+                this.setState({stringImages : this.state.images.toString()});
+               
+               
+            } else {
+                this.setState({ images: [result] });
+                this.stringImages = this.state.images.toString();
             }
         });
     }
 
     handleClearImage = (image) => {
-        this.setState({images: this.state.images.filter((_image) => _image !== image)});
+        const newImages = this.state.images.filter((_image) => _image !== image);
+        this.setState({ images: newImages });
+        this.setState({stringImages : newImages.toString()});
     };
 
     componentDidMount() {
@@ -51,7 +59,7 @@ export default class DialogFormTemplate extends SampleBase {
         ]);
         this.setState({ categories: result[0] });
     }
-
+   
     render() {
         const data = this.state;
         return (
@@ -85,17 +93,18 @@ export default class DialogFormTemplate extends SampleBase {
                         label='Cover photo'
                         loading={data.loading}
                         handleImageChange={this.uploadImage.bind(this)}
-                        image={ ''}
+                        image={''}
                         imageStyle='w-[150px] h-[150px]'
-                        name='image'
                         containerStyle='input-container-row'
                         labelStyle='e-control-wrapper'
                         onChange={this.onChange.bind(this)}
                         deleteButtonStyle='left-0'
                     />
-                    
+                    <div>
+                        <input type="text" name='image' hidden value={data.stringImages} />
+                    </div>
                     <div className='input-container-row  flex-row flex-wrap '>
-                        {this.state.images?.map((image) => (
+                        {data?.images?.map((image) => (
                             <div className='relative h-full m-2 w-[150px]' key={image}>
                                 <img src={image} className={`w-[150px] h-[150px]`} />
                                 <DeleteButton className='left-0' onClick={() => this.handleClearImage(image)} />

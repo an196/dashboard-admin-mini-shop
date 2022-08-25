@@ -20,7 +20,7 @@ function UnitInput({ name, register, errors, message, required }) {
                         {...register(`${name}`, { required: required })}
                     />
                     <div className='absolute inset-y-0 right-0 flex items-center'>
-                        <label for='currency' className='sr-only'>
+                        <label  className='sr-only'>
                             Currency
                         </label>
                         <select

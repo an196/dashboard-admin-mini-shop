@@ -1,4 +1,4 @@
-import React, {  useRef } from 'react';
+import React, { useRef } from 'react';
 //Synfusion
 import {
     GridComponent,
@@ -127,7 +127,21 @@ function Products() {
 
         if (args.requestType === 'save' && args.form) {
             if (args.data.goodsID) {
-                updateProduct(args.data)
+             
+                
+                let newImages=[];
+                let stringImages = args.data.image;
+                console.log(stringImages)
+                if(stringImages)
+                    newImages = stringImages.split(',');
+
+                 
+                const newData = {
+                    ...args.data,
+                    image: newImages,
+                };
+                console.log(newData)
+                updateProduct(newData)
                     .unwrap()
                     .then((data) => console.log(data))
                     .catch((err) => console.log(err));
@@ -139,13 +153,12 @@ function Products() {
             }
         }
     }
-
+    
     function dialogTemplate(props) {
         return <DialogFormTemplate {...props} />;
     }
 
     function toolbarClick(args) {
-       
         dialogInstance.buttons = buttons;
         if (args.item.id === 'delete') {
             if (gridInstance.getSelectedRecords().length !== 0) {
