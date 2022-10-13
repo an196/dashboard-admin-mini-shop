@@ -14,7 +14,7 @@ export const bannerApiSlice = apiSlice.injectEndpoints({
                 url: '/banner/default',
                 method: 'POST',
                 body: { 
-                    
+                    ...banner,
                 }
                  
             }),

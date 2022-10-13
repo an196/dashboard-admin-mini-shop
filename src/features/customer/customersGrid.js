@@ -4,7 +4,7 @@ const customerGridImage = (props) => (
     <div className='image flex gap-4'>
         <img className='rounded-full w-10 h-10' src={props.imgProfile} alt='employee' />
         <div>
-            <p>{props.name}</p>
+            <p>{props.username}</p>
             <p>{props.email}</p>
         </div>
     </div>

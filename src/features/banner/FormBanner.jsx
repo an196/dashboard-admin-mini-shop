@@ -7,7 +7,7 @@ import { formatDate } from '../../utils/helper/format';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 
 function FormBanner({ banner, onUpdate }) {
-    const {currentColor } = useStateContext();
+    const { currentColor } = useStateContext();
     const [infoBanner, setInfoBanner] = useState(banner);
     const [imageLoading, setImageLoading] = useState(false);
     const [image, setImage] = useState();
@@ -53,11 +53,13 @@ function FormBanner({ banner, onUpdate }) {
 
     useEffect(() => {
         //to check props changed
-        setValue('saleTime', infoBanner?.saleTime);
-        setValue('image', infoBanner?.image);
-        setValue('__v', infoBanner?.__v);
-        setValue('_id', infoBanner?._id);
-        setImage(infoBanner?.image);
+        if (infoBanner) {
+            setValue('saleTime', infoBanner?.saleTime);
+            setValue('image', infoBanner?.image);
+            setValue('__v', infoBanner?.__v);
+            setValue('_id', infoBanner?._id);
+            setImage(infoBanner?.image);
+        }
     }, []);
 
     return (
@@ -136,7 +138,7 @@ function FormBanner({ banner, onUpdate }) {
                 <label className='input-lable'>Sale time</label>
                 <div className='w-1/2'>
                     <DatePicker
-                        selected={new Date(infoBanner?.saleTime)}
+                       
                         onChange={(date) => onSaleTimeChange(date)}
                         className='input-form'
                         value={formatDate(infoBanner?.saleTime, true)}

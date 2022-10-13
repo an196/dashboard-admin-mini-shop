@@ -97,7 +97,6 @@ function Employees() {
 
     if (isSuccess) {
         employees = [...data];
-        console.log(employees);
     }
 
     if (isError) {
@@ -139,8 +138,6 @@ function Employees() {
         }
 
         if (args.requestType === 'save' && args.form) {
-            console.log(args.data);
-
             if (args.data.employeeID) {
                 updateEmployee(args.data)
                     .unwrap()
@@ -187,6 +184,7 @@ function Employees() {
     function cancelClick(args) {
         dialogInstance.hide();
     }
+    
     return (
         <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
             <div className='flex justify-between items-center'  id='dialog-target'>

@@ -5,7 +5,14 @@ export const customerApiSlice = apiSlice.injectEndpoints({
         getCustomers: builder.query({
             query: () => '/customers',
         }),
+        deleteCustomers: builder.mutation({
+            query: (id) => ({
+                url: `/customers${id}`,
+                method: 'DELETE',
+                body: {}
+            })
+        }),
     }),
 });
 
-export const { useGetCustomersQuery } = customerApiSlice;
+export const { useGetCustomersQuery, useDeleteCustomersMutation } = customerApiSlice;

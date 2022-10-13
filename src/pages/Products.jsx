@@ -126,27 +126,24 @@ function Products() {
         }
 
         if (args.requestType === 'save' && args.form) {
-            if (args.data.goodsID) {
-             
-                
-                let newImages=[];
-                let stringImages = args.data.image;
-                console.log(stringImages)
-                if(stringImages)
-                    newImages = stringImages.split(',');
+            let newImages=[];
+            let stringImages = args.data.image;
+           
+            if(stringImages)
+                newImages = stringImages.split(',');
 
-                 
-                const newData = {
-                    ...args.data,
-                    image: newImages,
-                };
-                console.log(newData)
+            const newData = {
+                ...args.data,
+                image: newImages,
+            };
+
+            if (args.data.goodsID) {    
                 updateProduct(newData)
                     .unwrap()
                     .then((data) => console.log(data))
                     .catch((err) => console.log(err));
             } else {
-                createProduct(args.data)
+                createProduct(newData)
                     .unwrap()
                     .then((data) => console.log(data))
                     .catch((err) => console.log(err));

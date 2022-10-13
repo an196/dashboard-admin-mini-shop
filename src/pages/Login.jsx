@@ -19,7 +19,12 @@ function Login() {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues:{
+            email: 'admin@gmail.com',
+            password: 'admin'
+        }
+    });
 
     const onSubmit = async ({ email, password }) => {
         try {

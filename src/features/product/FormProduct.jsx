@@ -179,7 +179,7 @@ function FormProduct({ onUpdate, product }) {
             />
             <div className='input-container-row w-full flex-row flex-wrap '>
                 {images.map((image) => (
-                    <div className='relative h-full m-2 w-[150px]'>
+                    <div className='relative h-full m-2 w-[150px]' key={image}>
                         <img src={image} className={`w-[150px] h-[150px]`} />
                         <DeleteButton className='left-0' onClick={() => handleClearImage(image)} />
                     </div>

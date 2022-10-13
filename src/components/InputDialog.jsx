@@ -1,10 +1,11 @@
 import React from 'react';
 
 function InputDialog({value, name, type, onChange, label, disable, hidden}) {
+    let defaultValue = value ?? '';
     return (
         <div className={`e-float-input e-control-wrapper`}>
             <input
-                value={value || ''}
+                defaultValue={defaultValue}
                 id={name}
                 name={name}
                 type={type}

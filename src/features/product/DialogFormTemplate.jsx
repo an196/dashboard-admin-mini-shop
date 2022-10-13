@@ -6,7 +6,6 @@ import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 import { SampleBase } from '../../components/Base/SampleBase';
 import { NavLink } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
-import toast from 'react-hot-toast';
 import { formatDate } from '../../utils/helper/format';
 
 export default class DialogFormTemplate extends SampleBase {
@@ -15,7 +14,7 @@ export default class DialogFormTemplate extends SampleBase {
         this.state = Object.assign({}, props);
         this.state.categories = [];
         this.state.images = props.image ?? [];
-        this.state.stringImages=props.image.toString() ?? '';
+        this.state.stringImages = props?.image ? props.image.toString() : '';
     }
 
     onChange(args) {
@@ -32,9 +31,7 @@ export default class DialogFormTemplate extends SampleBase {
         firebaseUploadImage(file, 'product').then((result) => {
             if (this.state.images) {
                 this.setState({ images: [...this.state.images, result] });
-                this.setState({stringImages : this.state.images.toString()});
-               
-               
+                this.setState({ stringImages: this.state.images.toString() });
             } else {
                 this.setState({ images: [result] });
                 this.stringImages = this.state.images.toString();
@@ -45,7 +42,7 @@ export default class DialogFormTemplate extends SampleBase {
     handleClearImage = (image) => {
         const newImages = this.state.images.filter((_image) => _image !== image);
         this.setState({ images: newImages });
-        this.setState({stringImages : newImages.toString()});
+        this.setState({ stringImages: newImages.toString() });
     };
 
     componentDidMount() {
@@ -59,7 +56,7 @@ export default class DialogFormTemplate extends SampleBase {
         ]);
         this.setState({ categories: result[0] });
     }
-   
+
     render() {
         const data = this.state;
         return (
@@ -101,7 +98,7 @@ export default class DialogFormTemplate extends SampleBase {
                         deleteButtonStyle='left-0'
                     />
                     <div>
-                        <input type="text" name='image' hidden value={data.stringImages} />
+                        <input type='text' name='image' hidden value={data.stringImages} />
                     </div>
                     <div className='input-container-row  flex-row flex-wrap '>
                         {data?.images?.map((image) => (
@@ -115,6 +112,7 @@ export default class DialogFormTemplate extends SampleBase {
                         id='goodsReceipts'
                         name='goodsReceipts'
                         value={formatDate(data.goodsReceipts)}
+                        onChange={this.onChange.bind(this)}
                         placeholder='Goods Receipts'
                         floatLabelType='Always'
                         format='dd/MM/yyyy'
@@ -123,6 +121,7 @@ export default class DialogFormTemplate extends SampleBase {
                         id='category'
                         name='category'
                         value={data.category}
+                        onChange={this.onChange.bind(this)}
                         dataSource={data.categories}
                         fields={{ text: 'name', value: 'code' }}
                         placeholder='Category'
@@ -136,16 +135,18 @@ export default class DialogFormTemplate extends SampleBase {
                         label='Amount'
                         onChange={this.onChange.bind(this)}
                     />
-                    <div className='mt-2'>
-                        <NavLink
-                            to={`/products/update/${data._id}`}
-                            className={`flex flex-row w-full underline  underline-offset-auto items-center space-x-1
-                             hover:text-blue-900 hover:font-medium`}
-                        >
-                            <span className=' '>More details</span>
-                            <AiOutlineArrowRight className='mt-[1px]' />
-                        </NavLink>
-                    </div>
+                    {data?.goodsID && (
+                        <div className='mt-2'>
+                            <NavLink
+                                to={`/products/update/${data._id}`}
+                                className={`flex flex-row w-full underline  underline-offset-auto items-center space-x-1
+                              hover:text-blue-900 hover:font-medium`}
+                            >
+                                <span className=' '>More details</span>
+                                <AiOutlineArrowRight className='mt-[1px]' />
+                            </NavLink>
+                        </div>
+                    )}
                 </div>
             </div>
         );

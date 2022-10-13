@@ -1,26 +1,33 @@
 import toast from 'react-hot-toast';
 import { Header } from '../components';
-import { useGetBannerQuery, useUpdateBannerMutation } from '../features/banner/bannerApiSlice';
+import { useGetBannerQuery, useUpdateBannerMutation, useCreateBannerMutation } from '../features/banner/bannerApiSlice';
 import FormBanner from '../features/banner/FormBanner';
-import {compareBanner} from '../utils/helper/compare';
+import { compareBanner } from '../utils/helper/compare';
 
 function Banner() {
     const { data, isSuccess, isLoading, isError, error } = useGetBannerQuery();
     const [updateBanner] = useUpdateBannerMutation();
-
+    const [createBanner] = useCreateBannerMutation();
     let banner;
     if (isSuccess) {
         banner = { ...data[0] };
     }
 
     function onUpdate(props) {
-        console.log(props)
-        if (compareBanner(props, banner)) {
-            toast((t) => <span>Oop! 🤨 Nothing changes</span>);
+
+        console.log(banner);
+        if (banner?.image) {
+            if (compareBanner(props, banner)) {
+                toast((t) => <span>Oop! 🤨 Nothing changes</span>);
+            } else {
+                updateBanner(props)
+                    .then(() => toast.success('Banner update successful'))
+                    .catch(() => toast.error('Banner update failed'));
+            }
         } else {
-            updateBanner(props)
-                .then(() => toast.success('Banner update successful'))
-                .catch(() => toast.error('Bannẻ update failed'));
+            createBanner(props)
+                .then(() => toast.success('Banner create successful'))
+                .catch(() => toast.error('Banner create failed'));
         }
     }
 
@@ -33,9 +40,7 @@ function Banner() {
                 <div className='flex-1 p-10 border-1'>
                     {isSuccess && <FormBanner banner={banner} onUpdate={onUpdate} />}
                 </div>
-                <div className='flex-1'>
-                    
-                </div>
+                <div className='flex-1'></div>
             </div>
         </div>
     );
