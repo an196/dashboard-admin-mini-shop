@@ -182,7 +182,7 @@ function Products() {
     }
 
     return (
-        <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
+        <div className='mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl'>
             <div className='flex justify-between items-center' id='dialog-target'>
                 <Header category='Page' title='Products' />
                 <ActionButton

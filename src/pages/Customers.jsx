@@ -10,7 +10,7 @@ import {
     Toolbar,
     Sort,
     Filter,
-    Search
+    Search,
 } from '@syncfusion/ej2-react-grids';
 
 // import { customersData, customersGrid } from "../data/dummy";
@@ -18,6 +18,7 @@ import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import { Header } from '../components';
 import { customersGrid } from '../features/customer/customersGrid';
 import { useGetCustomersQuery, useDeleteCustomersMutation } from '../features/customer/customerApiSlice';
+import toast from 'react-hot-toast';
 
 const toolbarOptions = [
     {
@@ -30,7 +31,6 @@ const toolbarOptions = [
     'Cancel',
 ];
 
-
 function Customers() {
     const { data, isLoading, isSuccess, isError, error } = useGetCustomersQuery();
     const [deleteCustomers] = useDeleteCustomersMutation();
@@ -41,7 +41,7 @@ function Customers() {
     let gridInstance = useRef();
 
     if (isLoading) {
-        return  (<p>"Loading..."</p>);
+        return <p>"Loading..."</p>;
     }
 
     if (isSuccess) {
@@ -64,7 +64,7 @@ function Customers() {
             click: () => cancelClick(),
         },
     ];
-    
+
     let buttons1 = [
         {
             buttonModel: {
@@ -109,7 +109,7 @@ function Customers() {
         deleteCustomers(id)
             .unwrap()
             .then((data) => {})
-            .catch((err) => console.log(err));
+            .catch((err) => toast.err('Can not delete customer'));
     };
 
     function actionBegin(args) {
@@ -123,9 +123,9 @@ function Customers() {
     function actionComplete(args) {}
 
     return (
-        <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center'  id='dialog-target'>
-            <Header category='Page' title='Customers' />
+        <div className='mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl'>
+            <div className='flex justify-between items-center' id='dialog-target'>
+                <Header category='Page' title='Customers' />
             </div>
             <GridComponent
                 id='gridcomp'

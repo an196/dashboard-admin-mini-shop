@@ -16,6 +16,8 @@ import axios from 'axios';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
 import UnitInput from './UnitInput';
 
+
+
 function FormProduct({ onUpdate, product }) {
     const { currentColor } = useStateContext();
     const [goodsReceipts, setGoodsReceipts] = useState();
@@ -97,7 +99,7 @@ function FormProduct({ onUpdate, product }) {
     }, []);
 
     
-    console.log(product)
+    
     return (
         <form onSubmit={handleSubmit(onUpdate)} className='space-y-3 w-full'>
             <InputForm
@@ -185,7 +187,7 @@ function FormProduct({ onUpdate, product }) {
                     </div>
                 ))}
             </div>
-            <Editor label='Details' onChange={onEditorChange} value={product?.details ?? ''} />
+            <Editor label='Details' onChange={onEditorChange} value={product?.details ?? ''}/>
             <div className='input-container-row'>
                 <ActionButton
                     text='Save'

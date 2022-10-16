@@ -19,11 +19,8 @@ function CreateProduct() {
             <div className='flex justify-between items-center'>
                 <Header category='Page' title='Products' />
             </div>
-            <div className='flex w-full'>
-                <div className='flex-1 p-10 border-1'>
+            <div className='flex w-full p-10'>
                     <FormProduct onUpdate={onUpdate} />
-                </div>
-                <div className='flex-1'></div>
             </div>
         </div>
     );

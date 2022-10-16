@@ -32,15 +32,14 @@ function Banner() {
     }
 
     return (
-        <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center'>
+        <div className='mt-16 p-0 md:m-10  md:p-10 bg-white rounded-3xl'>
+            <div className='flex justify-between items-center p-2 md:p-0'>
                 <Header category='Page' title='Banner' />
             </div>
             <div className='flex w-full'>
-                <div className='flex-1 p-10 border-1'>
+                <div className='md:p-10 p-2 border-1 w-full xl:w-[50%]'>
                     {isSuccess && <FormBanner banner={banner} onUpdate={onUpdate} />}
                 </div>
-                <div className='flex-1'></div>
             </div>
         </div>
     );

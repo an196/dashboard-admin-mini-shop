@@ -106,7 +106,6 @@ function Category() {
         }
 
         if (args.requestType === 'delete') {
-            console.log(args.data[0]);
             //triggers while deleting the record
             const id = args.data[0]?._id;
             handleDelete(id);
@@ -145,7 +144,6 @@ function Category() {
     }
 
     function toolbarClick(args) {
-       
         dialogInstance.buttons = buttons;
         if (args.item.id === 'delete') {
             if (gridInstance.getSelectedRecords().length !== 0) {
@@ -172,38 +170,39 @@ function Category() {
     }
 
     return (
-        <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center' id='dialog-target'>
+        <div className='mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl'>
+            <div lassName='flex justify-between items-center' id='dialog-target'>
                 <Header category='Page' title='Categories' />
             </div>
-
-            <GridComponent
-                id='gridcomp'
-                ref={(grid) => (gridInstance = grid)}
-                dataSource={categories}
-                allowPaging
-                allowSorting
-                toolbar={toolbarOptions}
-                width='auto'
-                editSettings={editing}
-                actionBegin={actionBegin}
-                actionComplete={actionComplete}
-                toolbarClick={toolbarClick}
-            >
-                <ColumnsDirective>
-                    {categoryGrid.map((item, index) => (
-                        <ColumnDirective key={index} {...item} />
-                    ))}
-                </ColumnsDirective>
-                <Inject services={[Page, Search, Toolbar, Edit]} />
-            </GridComponent>
-            <DialogComponent
-                width='300px'
-                target='#dialog-target'
-                visible={false}
-                isModal={true}
-                ref={(dialog) => (dialogInstance = dialog)}
-            />
+            <div className='w-[95xw] md:w-full'>
+                <GridComponent
+                    id='gridcomp'
+                    ref={(grid) => (gridInstance = grid)}
+                    dataSource={categories}
+                    allowPaging
+                    allowSorting
+                    toolbar={toolbarOptions}
+                    width='auto'
+                    editSettings={editing}
+                    actionBegin={actionBegin}
+                    actionComplete={actionComplete}
+                    toolbarClick={toolbarClick}
+                >
+                    <ColumnsDirective>
+                        {categoryGrid.map((item, index) => (
+                            <ColumnDirective key={index} {...item} />
+                        ))}
+                    </ColumnsDirective>
+                    <Inject services={[Page, Search, Toolbar, Edit]} />
+                </GridComponent>
+                <DialogComponent
+                    width='300px'
+                    target='#dialog-target'
+                    visible={false}
+                    isModal={true}
+                    ref={(dialog) => (dialogInstance = dialog)}
+                />
+            </div>
         </div>
     );
 }

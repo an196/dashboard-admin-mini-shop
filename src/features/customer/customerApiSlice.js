@@ -7,7 +7,7 @@ export const customerApiSlice = apiSlice.injectEndpoints({
         }),
         deleteCustomers: builder.mutation({
             query: (id) => ({
-                url: `/customers${id}`,
+                url: `/customers/${id}`,
                 method: 'DELETE',
                 body: {}
             })

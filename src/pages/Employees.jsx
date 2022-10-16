@@ -184,10 +184,10 @@ function Employees() {
     function cancelClick(args) {
         dialogInstance.hide();
     }
-    
+
     return (
-        <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
-            <div className='flex justify-between items-center'  id='dialog-target'>
+        <div className='mt-16 p-0 md:m-10  md:p-10 bg-white rounded-3xl'>
+            <div className='flex justify-between items-center p-2 md:p-0' id='dialog-target'>
                 <Header category='Page' title='Employees' />
                 <ActionButton
                     color='white'
@@ -200,34 +200,36 @@ function Employees() {
                     to='/employees/add'
                 />
             </div>
-            <GridComponent
-                id='gridcomp'
-                ref={(grid) => (gridInstance = grid)}
-                dataSource={employees}
-                allowPaging
-                allowSorting
-                toolbar={toolbarOptions}
-                width='auto'
-                editSettings={editing}
-                actionBegin={actionBegin.bind(this)}
-                actionComplete={actionComplete.bind(this)}
-                actionFailure={actionFailure.bind}
-                toolbarClick={toolbarClick}
-            >
-                <ColumnsDirective>
-                    {employeesGrid.map((item, index) => (
-                        <ColumnDirective key={index} {...item} />
-                    ))}
-                </ColumnsDirective>
-                <Inject services={[Page, Search, Toolbar, Edit]} />
-            </GridComponent>
-            <DialogComponent
-                width='300px'
-                target='#dialog-target'
-                visible={false}
-                isModal={true}
-                ref={(dialog) => (dialogInstance = dialog)}
-            />
+            <div className='p-2 md:p-0 w-full'>
+                <GridComponent
+                    id='gridcomp'
+                    ref={(grid) => (gridInstance = grid)}
+                    dataSource={employees}
+                    allowPaging
+                    allowSorting
+                    toolbar={toolbarOptions}
+                    width='auto'
+                    editSettings={editing}
+                    actionBegin={actionBegin.bind(this)}
+                    actionComplete={actionComplete.bind(this)}
+                    actionFailure={actionFailure.bind}
+                    toolbarClick={toolbarClick}
+                >
+                    <ColumnsDirective>
+                        {employeesGrid.map((item, index) => (
+                            <ColumnDirective key={index} {...item} />
+                        ))}
+                    </ColumnsDirective>
+                    <Inject services={[Page, Search, Toolbar, Edit]} />
+                </GridComponent>
+                <DialogComponent
+                    width='300px'
+                    target='#dialog-target'
+                    visible={false}
+                    isModal={true}
+                    ref={(dialog) => (dialogInstance = dialog)}
+                />
+            </div>
         </div>
     );
 }

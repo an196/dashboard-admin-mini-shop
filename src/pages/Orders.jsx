@@ -20,7 +20,7 @@ import { Header } from '../components';
 
 function Orders() {
   return (
-    <div className="m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl">
       <Header category="Page" title="Orders"/>
       <GridComponent 
           id="gridcomp"
