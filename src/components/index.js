@@ -17,4 +17,5 @@ export { default as DragAndDropImage } from './DragAndDropImage';
 export { default as InputForm } from './InputForm';
 export { default as DropDown } from './DropDown';
 export { default as Editor } from './Editor';
+export { default as LogOutButton } from './LogOutButton';
 export { default as AlertModal } from './AlertModal';
