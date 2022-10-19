@@ -9,7 +9,8 @@ export const compareBanner = (oldBanner, newBanner) => {
         oldBanner.largeText2 === newBanner.largeText2 &&
         oldBanner.discount === newBanner.discount &&
         oldBanner.saleTime === newBanner.saleTime &&
-        oldBanner.updateAt === newBanner.updateAt
+        oldBanner.updateAt === newBanner.updateAt &&
+        oldBanner.item._id === newBanner.item._id
     )return true;
 
     return false;
