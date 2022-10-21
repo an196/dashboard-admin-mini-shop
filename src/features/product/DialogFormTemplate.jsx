@@ -15,6 +15,7 @@ export default class DialogFormTemplate extends SampleBase {
         this.state.categories = [];
         this.state.images = props.image ?? [];
         this.state.stringImages = props?.image ? props.image.toString() : '';
+        this.myRef = React.createRef();
     }
 
     onChange(args) {
@@ -48,6 +49,7 @@ export default class DialogFormTemplate extends SampleBase {
     componentDidMount() {
         // Set initail Focus
         this.getCategories();
+        console.log(this.myRef.current)
     }
 
     async getCategories() {
@@ -60,7 +62,7 @@ export default class DialogFormTemplate extends SampleBase {
     render() {
         const data = this.state;
         return (
-            <div className=''>
+            <div className='control-pane' ref={this.myRef}>
                 <div className='grid text-md'>
                     {!data.isAdd && (
                         <InputDialog
@@ -98,11 +100,11 @@ export default class DialogFormTemplate extends SampleBase {
                         deleteButtonStyle='left-0'
                     />
                     <div>
-                        <input type='text' name='image' hidden value={data.stringImages} />
+                        <input type='text' name='image' hidden value={data.stringImages} onChange={()=>{}} />
                     </div>
                     <div className='input-container-row  flex-row flex-wrap '>
                         {data?.images?.map((image) => (
-                            <div className='relative h-full m-2 w-[150px]' key={image}>
+                            <div className='relative h-auto m-2 w-[150px]' key={image}>
                                 <img src={image} className={`w-[150px] h-[150px]`} />
                                 <DeleteButton className='left-0' onClick={() => this.handleClearImage(image)} />
                             </div>

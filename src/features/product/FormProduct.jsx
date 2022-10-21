@@ -69,7 +69,7 @@ function FormProduct({ onUpdate, product }) {
     };
 
     const onEditorChange = (args) => {
-        console.log(args)
+        //console.log(args)
         setValue('details', args.value);
     };
 

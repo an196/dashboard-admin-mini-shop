@@ -8,9 +8,9 @@ function SelectItem({options, onChange, defaultValue}) {
         <SingleValue {...props}>
             <img
                 src={props.data.image}
-                className='h-[30px] w-[30px] mr-[10px] ml-0'
+                className='h-[30px] w-[30px] mr-[10px] ml-0 '
             />
-            {props.data.name}
+            <h4 className=' text-[16px] font-normal'>{props.data.name}</h4>
         </SingleValue>
     );
 
@@ -18,9 +18,10 @@ function SelectItem({options, onChange, defaultValue}) {
         <Option {...props}>
             <img
                 src={props.data.image}
-                className='h-[30px] w-[30px] mr-[10px] ml-0'
+                className='h-[30px] w-[30px] mr-[10px] ml-0 '
             />
-            {props.data.name}
+            <h3 className=' text-[16px] font-normal'>{props.data.name}</h3>
+            
         </Option>
     );
 
@@ -31,7 +32,16 @@ function SelectItem({options, onChange, defaultValue}) {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            
+            backgroundColor: state.isSearchable ? 'white' : '',
+            color: state.isSearchable ? '#9ca3af' : '',
+            ':hover': {
+                ...provided[':hover'],
+                backgroundColor: 
+                state.isSelected
+                    ? '#e9ecf2'
+                    : ''
+                  
+                }
         }),
         singleValue: (provided) => ({
             ...provided,
@@ -39,7 +49,7 @@ function SelectItem({options, onChange, defaultValue}) {
             flexDirection: 'row',
             alignItems: 'center',
         }),
-        control: (css,state) => ({ 
+        control: (css, state) => ({ 
             ...css, 
             paddingLeft: '0', 
             border: 0, 
@@ -48,11 +58,11 @@ function SelectItem({options, onChange, defaultValue}) {
             boxShadow: 'none',
             borderRadius: 0,
             fontSize: '14px',
-
+            
         })
     };
 
-    console.log('defaultValue',defaultValue)
+    // console.log('defaultValue',defaultValue)
     return (
         <div>
             <Select

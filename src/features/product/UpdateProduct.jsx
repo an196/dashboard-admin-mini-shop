@@ -18,7 +18,7 @@ function UpdateProduct() {
     }
    
     const onUpdate = (props) => {
-        console.log(props)
+        //console.log(props)
         updateProduct(props)
             .then(() => toast.success('Update product successful'))
             .catch(() => toast.error('Update product failure'));
@@ -31,10 +31,10 @@ function UpdateProduct() {
             </div>
             {isSuccess && (
                 <div className='flex w-full'>
-                    <div className='flex-1 p-10 border-1'>
+                    <div className='md:p-10 p-2 border-1 w-full xl:w-[50%]'>
                         <FormProduct onUpdate={onUpdate} product={product} />
                     </div>
-                    <div className='flex-1'></div>
+                    
                 </div>
             )}
         </div>

@@ -1,21 +1,22 @@
 import { format } from 'date-fns';
 
 const detailsTemplate = (props) => (
-    <div className='flex items-center justify-center h-[100px] overflow-y-auto flex-col space-y-2'>
+    <div className='flex items-center float-left h-[100px] overflow-y-auto overflow-x-hidden flex-col space-y-2 scrollbar px-2 w-full'>
         {props?.details.length > 0 &&
             props.details.map((item) => (
-                <div className='flex flex-row space-x-3' key={item?.orderID}>
-                    <img src={item?.image[0] || ''} width={30} height={30} className='w-[40px] h-[40px]' />
-                    <div className='flex flex-col float-left text-left tex-[10px]'>
-                        <h5>Name: {item?.name}</h5>
-                        <h5>Price: {item?.price}</h5>
-                        <h5>Category: {item?.category}</h5>
-                        <h5>Quantity: {item?.quantity}</h5>
+                <div className='flex flex-row space-x-3 ' key={item?.orderID}>
+                    <img src={item?.image[0] || ''} width={40} height={40} className='w-[40px] h-[40px]' />
+                    <div className='flex flex-col text-left flex-wrap'>
+                        <p className='break-words w-[150px]' > {item?.name}</p>
+                        <p>Price: {item?.price}</p>
+                        <p>Category: {item?.category}</p>
+                        <p>Quantity: {item?.quantity}</p>
                     </div>
                 </div>
             ))}
     </div>
 );
+
 
 const dateTempalte = (props) => <div>{props?.date ? format(new Date(props?.date), 'yyyy/MM/dd') : ''}</div>;
 
@@ -23,7 +24,7 @@ export const orderGrid = [
     {
         field: 'orderID',
         headerText: 'orderID',
-        width: '150',
+        width: '100',
         textAlign: 'Center',
     },
     {
@@ -36,26 +37,26 @@ export const orderGrid = [
     {
         field: 'customerName',
         headerText: 'Customer',
-        width: '150',
+        width: '100',
         textAlign: 'Center',
     },
     {
         field: 'date',
         headerText: 'Date',
-        width: '150',
+        width: '100',
         template: dateTempalte,
         textAlign: 'Center',
     },
     {
         field: 'totalAmount',
         headerText: 'Total Amount',
-        width: '150',
+        width: '100',
         textAlign: 'Center',
     },
     {
         field: 'totalPayment',
         headerText: 'Total Payment',
-        width: '150',
+        width: '100',
         textAlign: 'Center',
     },
 ];
