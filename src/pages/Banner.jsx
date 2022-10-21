@@ -8,6 +8,7 @@ function Banner() {
     const { data, isSuccess, isLoading, isError, error } = useGetBannerQuery();
     const [updateBanner] = useUpdateBannerMutation();
     const [createBanner] = useCreateBannerMutation();
+
     let banner;
     if (isSuccess) {
         banner = { ...data[0] };
@@ -16,7 +17,8 @@ function Banner() {
     function onUpdate(props) {
 
         console.log(banner);
-        if (banner?.image) {
+        console.log(props);
+        if (banner?.item) {
             if (compareBanner(props, banner)) {
                 toast((t) => <span>Oop! 🤨 Nothing changes</span>);
             } else {

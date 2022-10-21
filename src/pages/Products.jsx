@@ -50,6 +50,7 @@ function Products() {
 
     //rtk query
     const { data, isSuccess } = useGetProductsQuery();
+
     const [deleteProduct] = useDeleteProductMutation();
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
@@ -59,6 +60,7 @@ function Products() {
 
     //define variable
     let products;
+    let categories;
     let dialogInstance = useRef();
     let gridInstance = useRef();
     let isDelete = false;
@@ -181,6 +183,8 @@ function Products() {
         dialogInstance.hide();
     }
 
+    console.log(products)
+
     return (
         <div className='mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl'>
             <div className='flex justify-between items-center' id='dialog-target'>
@@ -204,11 +208,13 @@ function Products() {
                 allowPaging
                 allowSorting
                 toolbar={toolbarOptions}
-                width='auto'
                 editSettings={editing}
                 actionBegin={actionBegin}
                 actionComplete={actionComplete}
                 toolbarClick={toolbarClick}
+                height='100%' 
+                width='100%'
+                enableStickyHeader={true}
             >
                 <ColumnsDirective>
                     {productGrid?.map((item, index) => (

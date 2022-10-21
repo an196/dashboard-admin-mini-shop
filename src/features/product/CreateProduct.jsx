@@ -8,7 +8,6 @@ function CreateProduct() {
     const [createProduct] = useCreateProductMutation();
 
     const onUpdate = (props) => {
-        console.log(props)
         createProduct(props)
             .then(() => toast.success('Create product successful'))
             .catch(() => toast.error('Create product failure'));

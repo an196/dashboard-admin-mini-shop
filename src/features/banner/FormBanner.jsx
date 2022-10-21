@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import Select, { components } from 'react-select';
 import { useForm } from 'react-hook-form';
 import { useStateContext } from '../../context/ContextProvider';
 import DatePicker from 'react-datepicker';
-import { ActionButton, InputForm, DragAndDropImage } from '../../components';
+import { ActionButton, InputForm, DragAndDropImage, DropDown } from '../../components';
 import { formatDate } from '../../utils/helper/format';
 import { firebaseUploadImage } from '../firebase/firebaseUploadFile';
+import { useGetProductsQuery } from '../../features/product/productApiSlice';
+import SelectItem from './SelectItem';
 
 function FormBanner({ banner, onUpdate }) {
+    const { data, isLoading, isSuccess, isError } = useGetProductsQuery();
+
     const { currentColor } = useStateContext();
     const [infoBanner, setInfoBanner] = useState(banner);
     const [imageLoading, setImageLoading] = useState(false);
@@ -32,6 +37,12 @@ function FormBanner({ banner, onUpdate }) {
         },
     });
 
+    let products;
+
+    if (isSuccess) {
+        products = [...data];
+    }
+
     function onSaleTimeChange(date) {
         setInfoBanner({ saleTime: date });
         setValue('saleTime', date);
@@ -39,6 +50,11 @@ function FormBanner({ banner, onUpdate }) {
 
     const handleClearImage = (args) => {
         setImage(null);
+    };
+    const handleSelectItem = (args) => {
+       console.log(args)
+       setInfoBanner({ item: args});
+       setValue('item', args);
     };
 
     const handleChangeImage = (file) => {
@@ -58,10 +74,13 @@ function FormBanner({ banner, onUpdate }) {
             setValue('image', infoBanner?.image);
             setValue('__v', infoBanner?.__v);
             setValue('_id', infoBanner?._id);
+            setValue('item', infoBanner?.item);
             setImage(infoBanner?.image);
+            
         }
     }, []);
 
+    console.log('infoBanner?.item' ,infoBanner?.item);
     return (
         <form onSubmit={handleSubmit(onUpdate)} className='space-y-2'>
             <InputForm
@@ -138,7 +157,6 @@ function FormBanner({ banner, onUpdate }) {
                 <label className='input-lable'>Sale time</label>
                 <div className='w-1/2'>
                     <DatePicker
-                       
                         onChange={(date) => onSaleTimeChange(date)}
                         className='input-form'
                         value={formatDate(infoBanner?.saleTime, true)}
@@ -147,7 +165,8 @@ function FormBanner({ banner, onUpdate }) {
                     />
                 </div>
             </div>
-            <DragAndDropImage
+            {/* release v1 */}
+            {/* <DragAndDropImage
                 label='Image'
                 loading={imageLoading.loading}
                 handleImageChange={handleChangeImage}
@@ -157,8 +176,10 @@ function FormBanner({ banner, onUpdate }) {
                 containerStyle='input-container-row'
                 labelStyle='input-lable'
                 onDeleteImage={handleClearImage}
-            />
-
+            /> */}
+            <div className='input-container-row'>
+                <SelectItem options={products} onChange={handleSelectItem} defaultValue={infoBanner?.item} />
+            </div>
             <div className='input-container-row'>
                 <ActionButton
                     text='Save'

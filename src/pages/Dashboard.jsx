@@ -47,7 +47,7 @@ function Dashboard() {
                     >
                         <button
                             type='button'
-                            className='text-3xl text-white p-3 hover:drop-shadow-xl hover:rotate-90 duration-700'
+                            className=' sm:text-3xl text-white p-3 hover:drop-shadow-xl hover:rotate-90 duration-700text-xl'
                             onClick={() => setThemeSettings(true)}
                         >
                             <FiSettings />
