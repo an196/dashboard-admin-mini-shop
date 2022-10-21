@@ -10,7 +10,7 @@ import {
     Toolbar,
     Edit,
 } from '@syncfusion/ej2-react-grids';
-import { Browser, extend } from '@syncfusion/ej2-base';
+import { Browser} from '@syncfusion/ej2-base';
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import {
     useGetCategoriesQuery,
@@ -44,14 +44,13 @@ function Category() {
         template: dialogTemplate,
         showConfirmDialog: false,
     };
-    const { data, isLoading, isSuccess, isError, error } = useGetCategoriesQuery();
+    const { data, isSuccess } = useGetCategoriesQuery();
     const [updateCategory] = useUpdateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
     const [createCategory] = useCreateCategoryMutation();
 
     let categories;
     //define variable
-    let products;
     let dialogInstance = useRef();
     let gridInstance = useRef();
     let isDelete = false;

@@ -105,7 +105,7 @@ export default class DialogFormTemplate extends SampleBase {
                     <div className='input-container-row  flex-row flex-wrap '>
                         {data?.images?.map((image) => (
                             <div className='relative h-auto m-2 w-[150px]' key={image}>
-                                <img src={image} className={`w-[150px] h-[150px]`} />
+                                <img src={image} className={`w-[150px] h-[150px]`} alt={image}/>
                                 <DeleteButton className='left-0' onClick={() => this.handleClearImage(image)} />
                             </div>
                         ))}

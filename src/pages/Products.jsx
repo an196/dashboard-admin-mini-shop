@@ -17,9 +17,9 @@ import {
     useUpdateProductMutation,
 } from '../features/product/productApiSlice';
 import { productGrid } from '../features/product/productGrid';
-import { Header, ActionButton, AlertModal } from '../components';
+import { Header, ActionButton } from '../components';
 import DialogFormTemplate from '../features/product/DialogFormTemplate';
-import { Browser, extend } from '@syncfusion/ej2-base';
+import { Browser} from '@syncfusion/ej2-base';
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import { useStateContext } from '../context/ContextProvider';
 
@@ -60,7 +60,6 @@ function Products() {
 
     //define variable
     let products;
-    let categories;
     let dialogInstance = useRef();
     let gridInstance = useRef();
     let isDelete = false;

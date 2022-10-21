@@ -1,7 +1,6 @@
-import React from 'react';
 import { Header } from '../../components';
 import FormProduct from './FormProduct';
-import { useCreateProductMutation, useUpdateProductMutation, useGetProductQuery } from './productApiSlice';
+import { useUpdateProductMutation, useGetProductQuery } from './productApiSlice';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
@@ -10,7 +9,6 @@ function UpdateProduct() {
     let product;
 
     const { data, isSuccess } = useGetProductQuery(params.id);
-    const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
 
     if (isSuccess) {

@@ -8,14 +8,11 @@ import {
     ContextMenu,
     Filter,
     Page,
-    ExelExport,
     PdfExport,
     Edit,
     Inject,
     Search
 } from '@syncfusion/ej2-react-grids';
-
-import { ordersData, contextMenuItems } from '../data/dummy';
 import { Header } from '../components';
 import { useGetOrdersQuery } from '../features/order/orderApiSlice';
 import {orderGrid} from '../features/order/orderGrid';
@@ -25,7 +22,7 @@ const toolbarOptions = [
 ];
 
 function Orders() {
-    const { data, isLoading, isSuccess, isError, error } = useGetOrdersQuery();
+    const { data, isLoading, isSuccess } = useGetOrdersQuery();
 
     let orders;
 

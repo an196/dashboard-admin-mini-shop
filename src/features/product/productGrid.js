@@ -1,6 +1,4 @@
 import { formatDate } from '../../utils/helper/format';
-import { FiEdit } from 'react-icons/fi';
-
 import productFallback from '../../assets/product-fallback.png';
 
 const getImage = (images) => {
@@ -34,11 +32,6 @@ const gridGoodsReceipt = (props) => (
     </div>
 );
 
-const gridAction = (props) => (
-    <div className='cursor-pointer'>
-        <FiEdit />
-    </div>
-);
 
 export const productGrid = [
     {

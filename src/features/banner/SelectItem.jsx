@@ -1,4 +1,3 @@
-import React from 'react';
 import Select, { components } from 'react-select';
 
 function SelectItem({options, onChange, defaultValue}) {
@@ -9,6 +8,7 @@ function SelectItem({options, onChange, defaultValue}) {
             <img
                 src={props.data.image}
                 className='h-[30px] w-[30px] mr-[10px] ml-0 '
+                alt={props.data.image}
             />
             <h4 className=' text-[16px] font-normal'>{props.data.name}</h4>
         </SingleValue>
@@ -18,6 +18,7 @@ function SelectItem({options, onChange, defaultValue}) {
         <Option {...props}>
             <img
                 src={props.data.image}
+                alt={props.data.image}
                 className='h-[30px] w-[30px] mr-[10px] ml-0 '
             />
             <h3 className=' text-[16px] font-normal'>{props.data.name}</h3>

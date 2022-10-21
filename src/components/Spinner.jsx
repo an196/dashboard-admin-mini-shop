@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import BounceLoader from 'react-spinners/BounceLoader';
 import { useStateContext } from '../context/ContextProvider';
 

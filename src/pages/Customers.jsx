@@ -4,7 +4,6 @@ import {
     ColumnsDirective,
     ColumnDirective,
     Page,
-    Selection,
     Inject,
     Edit,
     Toolbar,
@@ -32,7 +31,7 @@ const toolbarOptions = [
 ];
 
 function Customers() {
-    const { data, isLoading, isSuccess, isError, error } = useGetCustomersQuery();
+    const { data, isLoading, isSuccess} = useGetCustomersQuery();
     const [deleteCustomers] = useDeleteCustomersMutation();
 
     let customers;

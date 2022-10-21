@@ -11,13 +11,12 @@ import toast from 'react-hot-toast';
 
 function Login() {
     const navigate = useNavigate();
-    const [login, { isLoading }] = useLoginMutation();
+    const [login] = useLoginMutation();
     const dispatch = useDispatch();
 
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm({
         defaultValues:{
@@ -56,6 +55,7 @@ function Login() {
                 <img
                     src={backgroundImg}
                     className='absolute overflow-hidden object-cover w-screen h-screen opacity-90 -z-10'
+                    alt={backgroundImg}
                 />
                 <form
                     className='relative space-y-8 rounded bg-white py-10 px-6 md:mt-0 md:max-w-md w-full  md:px-14 flex flex-col items-center'

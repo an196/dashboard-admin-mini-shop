@@ -1,11 +1,10 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useStateContext } from '../context/ContextProvider';
 import { logOut } from '../features/auth/authSlice';
 import toast from 'react-hot-toast';
 
 function ActionButton({ icon, bgColor, color, size, text, borderRadius, bgHoverColor, width, action, to, customeStyle, type }) {
     const { setIsClicked, initialState } = useStateContext();
-    const location = useLocation();
     let navigate = useNavigate();
 
     const onLogOut = async () => {

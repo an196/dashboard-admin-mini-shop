@@ -1,12 +1,5 @@
 import React from 'react';
-import { MdOutlineCancel } from 'react-icons/md';
-
-import { Button } from '.';
-import { chatData } from '../data/dummy';
-import { useStateContext } from '../context/ContextProvider';
-
 const Notification = () => {
-    const { currentColor } = useStateContext();
 
     return (
         <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full">
