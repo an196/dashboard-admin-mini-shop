@@ -1,7 +1,5 @@
 import React from 'react';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
-
-import { Layout } from './components';
+import { Route, Routes } from 'react-router-dom';
 import { Dashboard, Login } from './pages';
 import RequireAuth from './features/auth/RequireAuth';
 import { Toaster } from 'react-hot-toast';

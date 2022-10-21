@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect } from 'react';
 //component
 import { Header, ActionButton, Spinner } from '../../components';
 //form
@@ -8,7 +8,6 @@ import { useStateContext } from '../../context/ContextProvider';
 //icon
 import { FcAddImage } from 'react-icons/fc';
 import { MdDelete } from 'react-icons/md';
-import { ImCalendar } from 'react-icons/im';
 //file upload
 import { FileUploader } from 'react-drag-drop-files';
 //datetime picker
@@ -25,7 +24,7 @@ import toast from 'react-hot-toast';
 import { useCreateEmployeeMutation } from './employeeApiSlice';
 //constants
 import { TIMEDELAY } from '../../utils/constants/time.contants';
-import {countries} from '../../data/countries';
+import { countries } from '../../data/countries';
 
 const storage = getStorage(firebase);
 
@@ -35,16 +34,14 @@ const fileTypes = ['JPG', 'PNG', 'GIF'];
 function CreateEmployee() {
     const [wrongImageType, setWrongImageType] = useState(false);
     const [imageAsset, setImageAsset] = useState(null);
-    const progressBarRef = useRef();
     const [startDate, setStartDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
-    const [createEmployee, { isLoading }] = useCreateEmployeeMutation();
+    const [createEmployee] = useCreateEmployeeMutation();
 
     const {
         register,
         handleSubmit,
-        watch,
         setValue,
         reset,
         formState: { errors },
@@ -54,7 +51,7 @@ function CreateEmployee() {
 
     const onSubmit = (props) => {
         setPageLoading(true);
-        console.log(props);
+        //console.log(props);
 
         createEmployee(props)
             .then((data) => {
@@ -118,6 +115,8 @@ function CreateEmployee() {
                             break;
                         case 'running':
                             break;
+                        default:
+                            break;
                     }
                 },
                 (error) => {
@@ -132,6 +131,8 @@ function CreateEmployee() {
 
                         case 'storage/unknown':
                             toast.error('Unknown error occurred, inspect error.serverResponse');
+                            break;
+                        default:
                             break;
                     }
                 },
@@ -203,9 +204,11 @@ function CreateEmployee() {
                                         className='input-form'
                                         {...register('country', { required: true })}
                                     >
-                                        {countries?.map((country) => 
-                                            (<option key={country.code} value={country.name}>{country.name}</option>)
-                                        )}
+                                        {countries?.map((country) => (
+                                            <option key={country.code} value={country.name}>
+                                                {country.name}
+                                            </option>
+                                        ))}
                                     </select>
                                     {errors.country && <p className='input-lable-warning'>Please choose country.</p>}
                                 </label>

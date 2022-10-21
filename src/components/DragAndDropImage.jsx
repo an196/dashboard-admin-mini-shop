@@ -31,7 +31,7 @@ function DragAndDropImage({
                 )
             ) : (
                 <div className='relative h-full m-2 w-[150px]'>
-                    <img src={image} className={`${imageStyle}`} />
+                    <img src={image} className={`${imageStyle}`}  alt={image} />
                     <InputDialog value={image} name={name} type='text' hidden onChange={onChange} />
                     <DeleteButton onClick={onDeleteImage} className={`${deleteButtonStyle}`} />
                 </div>

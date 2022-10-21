@@ -13,7 +13,7 @@ export const firebaseUploadImage = (file, folder) => {
             loading: false,
         };
     
-        let firebaseURL;
+        var firebaseURL = '';
     
         if (
             file.type === 'image/png' ||
@@ -45,6 +45,8 @@ export const firebaseUploadImage = (file, folder) => {
                         case 'paused':
                             break;
                         case 'running':
+                            break;
+                        default:
                             break;
                     }
                 },

@@ -5,7 +5,6 @@ import {
     DropDown,
     InputForm,
     Editor,
-    InputDialog,
     DeleteButton,
 } from '../../components';
 import { useStateContext } from '../../context/ContextProvider';
@@ -30,9 +29,7 @@ function FormProduct({ onUpdate, product }) {
     const {
         register,
         handleSubmit,
-        watch,
         setValue,
-        reset,
         formState: { errors },
     } = useForm({
         mode: 'onChange',
@@ -97,8 +94,6 @@ function FormProduct({ onUpdate, product }) {
             setGoodsReceipts(new Date());
         }
     }, []);
-
-    
     
     return (
         <form onSubmit={handleSubmit(onUpdate)} className='space-y-3 w-full'>
@@ -182,7 +177,7 @@ function FormProduct({ onUpdate, product }) {
             <div className='input-container-row w-full flex-row flex-wrap '>
                 {images.map((image) => (
                     <div className='relative h-full m-2 w-[150px]' key={image}>
-                        <img src={image} className={`w-[150px] h-[150px]`} />
+                        <img src={image} className={`w-[150px] h-[150px]`} alt={image}/>
                         <DeleteButton className='left-0' onClick={() => handleClearImage(image)} />
                     </div>
                 ))}

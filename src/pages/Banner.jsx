@@ -5,7 +5,7 @@ import FormBanner from '../features/banner/FormBanner';
 import { compareBanner } from '../utils/helper/compare';
 
 function Banner() {
-    const { data, isSuccess, isLoading, isError, error } = useGetBannerQuery();
+    const { data, isSuccess} = useGetBannerQuery();
     const [updateBanner] = useUpdateBannerMutation();
     const [createBanner] = useCreateBannerMutation();
 

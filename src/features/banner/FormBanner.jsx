@@ -10,19 +10,16 @@ import { useGetProductsQuery } from '../../features/product/productApiSlice';
 import SelectItem from './SelectItem';
 
 function FormBanner({ banner, onUpdate }) {
-    const { data, isLoading, isSuccess, isError } = useGetProductsQuery();
+    const { data,  isSuccess } = useGetProductsQuery();
 
     const { currentColor } = useStateContext();
     const [infoBanner, setInfoBanner] = useState(banner);
-    const [imageLoading, setImageLoading] = useState(false);
     const [image, setImage] = useState();
 
     const {
         register,
         handleSubmit,
-        watch,
         setValue,
-        reset,
         formState: { errors },
     } = useForm({
         mode: 'onChange',
@@ -48,23 +45,10 @@ function FormBanner({ banner, onUpdate }) {
         setValue('saleTime', date);
     }
 
-    const handleClearImage = (args) => {
-        setImage(null);
-    };
     const handleSelectItem = (args) => {
        console.log(args)
        setInfoBanner({ item: args});
        setValue('item', args);
-    };
-
-    const handleChangeImage = (file) => {
-        console.log(file);
-        firebaseUploadImage(file)
-            .then((result) => {
-                setValue('image', result);
-                setImage(result);
-            })
-            .catch((err) => console.log(err));
     };
 
     useEffect(() => {

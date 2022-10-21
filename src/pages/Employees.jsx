@@ -10,7 +10,7 @@ import {
     Toolbar,
     Edit,
 } from '@syncfusion/ej2-react-grids';
-import { Browser, extend } from '@syncfusion/ej2-base';
+import { Browser} from '@syncfusion/ej2-base';
 
 import { employeesGrid } from '../features/employee/employeesGrid';
 import { DialogFormTemplate } from '../features/employee/DialogFormTemplate';
