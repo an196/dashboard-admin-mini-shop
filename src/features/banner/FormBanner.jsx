@@ -149,18 +149,6 @@ function FormBanner({ banner, onUpdate }) {
                     />
                 </div>
             </div>
-            {/* release v1 */}
-            {/* <DragAndDropImage
-                label='Image'
-                loading={imageLoading.loading}
-                handleImageChange={handleChangeImage}
-                image={image}
-                imageStyle='w-[150px] h-[150px]'
-                name='image'
-                containerStyle='input-container-row'
-                labelStyle='input-lable'
-                onDeleteImage={handleClearImage}
-            /> */}
             <div className='input-container-row'>
                 <SelectItem options={products} onChange={handleSelectItem} defaultValue={infoBanner?.item} />
             </div>

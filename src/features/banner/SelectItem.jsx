@@ -6,9 +6,9 @@ function SelectItem({options, onChange, defaultValue}) {
     const IconSingleValue = (props) => (
         <SingleValue {...props}>
             <img
-                src={props.data.image}
+                src={props.data.image[0]}
                 className='h-[30px] w-[30px] mr-[10px] ml-0 '
-                alt={props.data.image}
+                alt={props.data.image[0]}
             />
             <h4 className=' text-[16px] font-normal'>{props.data.name}</h4>
         </SingleValue>
@@ -17,8 +17,8 @@ function SelectItem({options, onChange, defaultValue}) {
     const IconOption = (props) => (
         <Option {...props}>
             <img
-                src={props.data.image}
-                alt={props.data.image}
+                src={props.data.image[0]}
+                alt={props.data.image[0]}
                 className='h-[30px] w-[30px] mr-[10px] ml-0 '
             />
             <h3 className=' text-[16px] font-normal'>{props.data.name}</h3>

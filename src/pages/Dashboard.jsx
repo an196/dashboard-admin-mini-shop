@@ -21,7 +21,7 @@ import CreateProduct from '../features/product/CreateProduct';
 import UpdateProduct from '../features/product/UpdateProduct';
 
 function Dashboard() {
-    const { activeMenu, themeSettings, setThemeSettings, currentColor, currentMode } = useStateContext();
+    const { activeMenu, themeSettings, handleOpenSettingButton, currentColor, currentMode } = useStateContext();
 
     return (
         <div className={currentMode === 'Dark' ? 'dark' : ''}>
@@ -35,7 +35,7 @@ function Dashboard() {
                         <button
                             type='button'
                             className=' sm:text-3xl text-white p-3 hover:drop-shadow-xl hover:rotate-90 duration-700text-xl'
-                            onClick={() => setThemeSettings(true)}
+                            onClick={() => handleOpenSettingButton(true)}
                         >
                             <FiSettings />
                         </button>

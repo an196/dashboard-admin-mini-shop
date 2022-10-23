@@ -7,6 +7,7 @@ import { SampleBase } from '../../components/Base/SampleBase';
 import { NavLink } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { formatDate } from '../../utils/helper/format';
+import fallbackImage from '../../assets/default-image.png';
 
 export default class DialogFormTemplate extends SampleBase {
     constructor(props) {
@@ -105,7 +106,7 @@ export default class DialogFormTemplate extends SampleBase {
                     <div className='input-container-row  flex-row flex-wrap '>
                         {data?.images?.map((image) => (
                             <div className='relative h-auto m-2 w-[150px]' key={image}>
-                                <img src={image} className={`w-[150px] h-[150px]`} alt={image}/>
+                                <img src={image|| fallbackImage} className={`w-[150px] h-[150px]`} alt={`fallbackImage`}/>
                                 <DeleteButton className='left-0' onClick={() => this.handleClearImage(image)} />
                             </div>
                         ))}
