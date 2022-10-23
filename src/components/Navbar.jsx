@@ -35,6 +35,7 @@ function Navbar() {
         setScreenSize,
         currentColor,
         initialState,
+        themeSettings,
     } = useStateContext();
 
     const navigate = useNavigate();
@@ -56,7 +57,12 @@ function Navbar() {
     }, []);
 
     useEffect(() => {
-        if (screenSize <= 900) {
+        if(themeSettings){
+            setActiveMenu(false);
+            return;
+        }
+       
+        if (screenSize <= 900 ) {
             setActiveMenu(false);
         } else {
             setActiveMenu(true);

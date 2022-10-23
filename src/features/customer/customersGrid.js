@@ -30,6 +30,7 @@ export const customersGrid = [
         textAlign: 'Center',
     },
     {
+        field: 'name',
         headerText: 'Name',
         width: '150',
         template: customerGridImage,

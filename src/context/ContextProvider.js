@@ -28,10 +28,15 @@ export const ContextProvider = ({ children }) => {
 
     localStorage.setItem("colorMode", color);
     setThemeSettings(false);
+    setActiveMenu(false);
   };
 
   const handleClick = (clicked) =>
     setIsClicked({ ...initialState, [clicked]: true });
+
+  const handleOpenSettingButton = () => {
+    setThemeSettings(true);
+  }
 
   return (
     <StateContext.Provider
@@ -49,7 +54,8 @@ export const ContextProvider = ({ children }) => {
         setThemeSettings,
         setMode,
         setColor,
-        initialState
+        initialState,
+        handleOpenSettingButton
       }}
     >
       {children}

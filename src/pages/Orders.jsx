@@ -32,7 +32,6 @@ function Orders() {
 
     if (isSuccess) {
         orders = [...data];
-        console.log(orders)
     }
 
     return (
