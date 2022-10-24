@@ -4,6 +4,8 @@
 ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+![Coveralls github](https://img.shields.io/badge/synfusion-%5E19.4.48-ff69b4?style=for-the-badge&logo=appveyor)
+
 
 ## Structure
 ![image](https://user-images.githubusercontent.com/46616063/197493023-aac57b33-7bc8-4f08-afc7-b2d8311efcde.png)
