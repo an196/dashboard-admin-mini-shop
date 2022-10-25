@@ -40,6 +40,7 @@ npm start
 - Refesh Token.
 - CRUD: customer, empoyee, order, product, category, banner.
 - Responsive for multi-devices.
+- Cacheable
 - Change banner.
 - Sort and search on board.
 - Paginantion.
