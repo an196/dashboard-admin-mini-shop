@@ -16,7 +16,7 @@ function App() {
         <Helmet>
                 <meta charSet="utf-8" />
                 <title>MiniShop</title>
-                <link rel="icon" href='./assets/logo.ico' />
+                <link rel="icon" href='./assets/logo.png' />
             </Helmet>
       <Toaster />
       <Routes>

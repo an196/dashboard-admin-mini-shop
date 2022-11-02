@@ -34,7 +34,7 @@ function Banner() {
     }
 
     return (
-        <div className='mt-16 p-0 md:m-10  md:p-10 bg-white rounded-3xl'>
+        <div className='hero-container'>
             <div className='flex justify-between items-center p-2 md:p-0'>
                 <Header category='Page' title='Banner' />
             </div>

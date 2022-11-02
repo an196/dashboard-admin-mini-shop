@@ -51,5 +51,9 @@ body {
   .input-lable-warning{
     @apply p-1 text-[13px] font-light text-orange-500;
   }
+
+  .hero-container { 
+    @apply mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl;
+  }
 }
 
