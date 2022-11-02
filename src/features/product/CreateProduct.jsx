@@ -14,11 +14,11 @@ function CreateProduct() {
     };
 
     return (
-        <div className='m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl'>
+        <div className='hero-container'>
             <div className='flex justify-between items-center'>
                 <Header category='Page' title='Products' />
             </div>
-            <div className='flex w-full p-10'>
+            <div className='flex w-full sm:p-10 p-2'>
                     <FormProduct onUpdate={onUpdate} />
             </div>
         </div>

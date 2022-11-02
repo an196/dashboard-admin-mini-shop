@@ -35,7 +35,7 @@ function Orders() {
     }
 
     return (
-        <div className='mt-16 p-2 md:m-10  md:p-10 bg-white rounded-3xl'>
+        <div className='hero-container'>
             <Header category='Page' title='Orders' />
             <GridComponent
                 id='gridcomp'
